@@ -560,31 +560,39 @@ function Footer({ onNavigate }) {
   };
 
   return (
-    <footer>
+    <footer className="site-footer">
       <div className="footer-marquee">
         <span>Kai Maison - Table et Bar - Berlin - Natural Wines - Sharing Plates -</span>
         <span>Kai Maison - Table et Bar - Berlin - Natural Wines - Sharing Plates -</span>
       </div>
       <div className="footer-container">
-        <a className="footer-logo" href={publicHref("/en")} onClick={(event) => handleNav(event, "/en")}>
-          <img src={images.logo} alt="Kai Maison" />
-        </a>
-        <div className="footer-contact">
+        <div className="footer-brand">
+          <a className="footer-logo" href={publicHref("/en")} onClick={(event) => handleNav(event, "/en")}>
+            <img src={images.logo} alt="Kai Maison" />
+          </a>
+          <p>French-Vietnamese inspired plates, natural wines, and a warm table by the canal.</p>
+        </div>
+        <div className="footer-contact" aria-label="Kai Maison contact details">
           <a href={links.map} target="_blank" rel="noreferrer">
             {contact.addressLine1}, {contact.addressLine2}
           </a>
           <a href={links.email}>{contact.email}</a>
           <a href={links.phone}>{contact.phone}</a>
+          <span>{contact.hours}</span>
           <a href={links.instagram} target="_blank" rel="noreferrer">
             Instagram
           </a>
         </div>
-      </div>
-      <div className="footer-credit">
-        <span>Coded by</span>
-        <a href="https://tuttylab.com" target="_blank" rel="noreferrer">
-          TUTTYLAB
+        <a className="footer-reserve" href={links.reservation} target="_blank" rel="noreferrer">
+          Reserve a Table
         </a>
+        <div className="footer-rule" aria-hidden="true" />
+        <div className="footer-credit" aria-label="Coded by TUTTYLAB">
+          <span>Coded by</span>
+          <a href={links.credit} target="_blank" rel="noreferrer">
+            TUTTYLAB
+          </a>
+        </div>
       </div>
     </footer>
   );

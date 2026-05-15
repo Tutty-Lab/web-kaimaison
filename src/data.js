@@ -7,7 +7,7 @@ export const links = {
   email: "mailto:kaimaisonberlin@gmail.com",
   phone: "tel:+493088773398",
   instagram: "https://www.instagram.com/kaimaisonberlin/",
-  credit: "https://asiamoin.com",
+  credit: "https://tuttylab.com",
   menuPdf: asset("kai-maison-menu.pdf"),
 };
 
