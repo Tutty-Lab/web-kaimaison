@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Instagram, Mail } from "lucide-react";
 import {
   contact,
   galleryImages,
@@ -553,37 +554,26 @@ function NotFoundPage() {
   );
 }
 
-function Footer({ onNavigate }) {
-  const handleNav = (event, href) => {
-    event.preventDefault();
-    onNavigate(href);
-  };
-
+function Footer() {
   return (
     <footer className="site-footer">
       <div className="footer-container">
-        <a className="footer-logo" href={publicHref("/en")} onClick={(event) => handleNav(event, "/en")}>
-          <img src={images.logo} alt="Kai Maison" />
+        <p className="footer-copy">&copy; Kai Maison</p>
+        <a className="footer-address" href={links.map} target="_blank" rel="noreferrer">
+          {contact.addressLine1}, {contact.addressLine2}
         </a>
-        <div className="footer-contact" aria-label="Kai Maison contact details">
-          <a href={links.map} target="_blank" rel="noreferrer">
-            {contact.addressLine1}, {contact.addressLine2}
+        <div className="footer-icons" aria-label="Kai Maison social links">
+          <a href={links.instagram} target="_blank" rel="noreferrer" aria-label="Kai Maison Instagram">
+            <Instagram size={18} strokeWidth={1.45} aria-hidden="true" />
           </a>
-          <span>{contact.hours}</span>
-          <a href={links.phone}>{contact.phone}</a>
-          <a href={links.email}>{contact.email}</a>
-          <a href={links.instagram} target="_blank" rel="noreferrer">
-            Instagram
+          <a href={links.email} aria-label="Email Kai Maison">
+            <Mail size={19} strokeWidth={1.45} aria-hidden="true" />
           </a>
         </div>
-        <a className="footer-reserve" href={links.reservation} target="_blank" rel="noreferrer">
-          Reservations
-        </a>
       </div>
       <div className="footer-credit" aria-label="Coded by TUTTYLAB">
-        <span>Coded by</span>
         <a href={links.credit} target="_blank" rel="noreferrer">
-          TUTTYLAB
+          Coded by TUTTYLAB
         </a>
       </div>
     </footer>
