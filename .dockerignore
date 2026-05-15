@@ -1,0 +1,6 @@
+.git
+assets
+dist
+node_modules
+output
+*.log

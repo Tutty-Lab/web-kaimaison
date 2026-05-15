@@ -18,3 +18,9 @@ npm run dev
 ```bash
 npm run build
 ```
+
+## Cloud Run
+
+```bash
+gcloud run deploy kaimaison-clone --source . --region asia-southeast1 --allow-unauthenticated
+```
