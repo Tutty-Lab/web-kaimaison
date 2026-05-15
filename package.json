@@ -7,7 +7,8 @@
     "dev": "vite --host 0.0.0.0",
     "build": "npm run optimize:assets && vite build",
     "preview": "vite preview --host 0.0.0.0",
-    "optimize:assets": "node scripts/optimize-assets.mjs"
+    "optimize:assets": "node scripts/optimize-assets.mjs",
+    "prepare:pages": "node scripts/prepare-pages.mjs"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^5.0.0",
