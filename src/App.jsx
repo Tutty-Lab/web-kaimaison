@@ -578,10 +578,13 @@ function Footer({ onNavigate }) {
           <a href={links.instagram} target="_blank" rel="noreferrer">
             Instagram
           </a>
-          <a href="https://tuttylab.com" target="_blank" rel="noreferrer">
-            Coded by TUTTYLAB
-          </a>
         </div>
+      </div>
+      <div className="footer-credit">
+        <span>Coded by</span>
+        <a href="https://tuttylab.com" target="_blank" rel="noreferrer">
+          TUTTYLAB
+        </a>
       </div>
     </footer>
   );
