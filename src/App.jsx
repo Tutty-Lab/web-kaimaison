@@ -102,7 +102,6 @@ function App() {
 
 function Header({ currentPath, onNavigate }) {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [langOpen, setLangOpen] = useState(false);
 
   useEffect(() => {
     document.body.classList.toggle("body-locked", mobileOpen);
@@ -139,27 +138,6 @@ function Header({ currentPath, onNavigate }) {
           <a className="btn-header" href={links.reservation} target="_blank" rel="noreferrer">
             Reservations
           </a>
-          <div className="language-menu">
-            <button
-              type="button"
-              className="language-trigger"
-              aria-expanded={langOpen}
-              aria-controls="language-options"
-              onClick={() => setLangOpen((value) => !value)}
-            >
-              EN
-            </button>
-            {langOpen && (
-              <div className="language-options" id="language-options">
-                <a href={publicHref("/en")} onClick={(event) => handleNav(event, "/en")}>
-                  English
-                </a>
-                <a href={publicHref("/de")} onClick={(event) => handleNav(event, "/de")}>
-                  Deutsch
-                </a>
-              </div>
-            )}
-          </div>
         </div>
       </div>
 
@@ -190,14 +168,6 @@ function Header({ currentPath, onNavigate }) {
             <a href={links.reservation} target="_blank" rel="noreferrer">
               Reservations
             </a>
-            <div className="mobile-language">
-              <a href={publicHref("/en")} onClick={(event) => handleNav(event, "/en")}>
-                English
-              </a>
-              <a href={publicHref("/de")} onClick={(event) => handleNav(event, "/de")}>
-                Deutsch
-              </a>
-            </div>
           </nav>
         </div>
       )}
@@ -599,13 +569,6 @@ function Footer({ onNavigate }) {
         <a className="footer-logo" href={publicHref("/en")} onClick={(event) => handleNav(event, "/en")}>
           <img src={images.logo} alt="Kai Maison" />
         </a>
-        <div className="footer-links">
-          {navItems.map((item) => (
-            <a key={item.href} href={publicHref(item.href)} onClick={(event) => handleNav(event, item.href)}>
-              {item.label}
-            </a>
-          ))}
-        </div>
         <div className="footer-contact">
           <a href={links.map} target="_blank" rel="noreferrer">
             {contact.addressLine1}, {contact.addressLine2}
@@ -615,8 +578,8 @@ function Footer({ onNavigate }) {
           <a href={links.instagram} target="_blank" rel="noreferrer">
             Instagram
           </a>
-          <a href={links.credit} target="_blank" rel="noreferrer">
-            Asia Moin
+          <a href="https://tuttylab.com" target="_blank" rel="noreferrer">
+            Coded by TUTTYLAB
           </a>
         </div>
       </div>

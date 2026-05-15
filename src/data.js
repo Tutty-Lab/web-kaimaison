@@ -15,11 +15,7 @@ export const navItems = [
   { label: "Home", href: "/en" },
   { label: "Menus", href: "/en/menu" },
   { label: "About", href: "/en/about" },
-  { label: "Press", href: "/en/press" },
   { label: "Events", href: "/en/events" },
-  { label: "Functions", href: "/en/functions" },
-  { label: "Gift Cards", href: "/en/giftcards" },
-  { label: "Contact", href: "/en/contact" },
 ];
 
 export const images = {

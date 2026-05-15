@@ -182,7 +182,6 @@ p {
 
 .button-reservierung,
 .btn-header,
-.language-trigger,
 .mobile-toggle {
   display: inline-flex;
   min-height: 44px;
@@ -207,40 +206,10 @@ p {
 
 .button-reservierung:hover,
 .btn-header:hover,
-.language-trigger:hover,
 .mobile-toggle:hover,
 .button-reservierung:focus-visible,
 .btn-header:focus-visible,
-.language-trigger:focus-visible,
 .mobile-toggle:focus-visible {
-  background: var(--ink);
-  color: var(--accent);
-  outline: none;
-}
-
-.language-menu {
-  position: relative;
-}
-
-.language-options {
-  position: absolute;
-  top: calc(100% + 0.5rem);
-  right: 0;
-  display: grid;
-  min-width: 150px;
-  border: 1px solid var(--ink);
-  background: var(--paper);
-  box-shadow: var(--shadow);
-}
-
-.language-options a {
-  padding: 0.85rem 1rem;
-  font-size: 0.9rem;
-  text-transform: uppercase;
-}
-
-.language-options a:hover,
-.language-options a:focus-visible {
   background: var(--ink);
   color: var(--accent);
   outline: none;
@@ -690,11 +659,12 @@ footer {
 
 .footer-container {
   display: grid;
-  grid-template-columns: 220px 1fr 280px;
+  grid-template-columns: 260px minmax(260px, 340px);
   gap: 2rem;
   width: min(1180px, calc(100% - 2rem));
   margin: 0 auto;
   padding: 3.5rem 0;
+  justify-content: space-between;
 }
 
 .footer-logo {
@@ -707,17 +677,11 @@ footer {
   width: 190px;
 }
 
-.footer-links,
 .footer-contact {
   display: grid;
   gap: 0.7rem;
 }
 
-.footer-links {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.footer-links a,
 .footer-contact a {
   color: var(--paper);
   font-size: 0.9rem;
@@ -726,9 +690,7 @@ footer {
   text-transform: uppercase;
 }
 
-.footer-links a:hover,
 .footer-contact a:hover,
-.footer-links a:focus-visible,
 .footer-contact a:focus-visible {
   color: var(--accent);
   outline: none;
@@ -806,11 +768,6 @@ footer {
     text-transform: uppercase;
   }
 
-  .mobile-language {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   .hero {
     min-height: 640px;
   }
@@ -841,10 +798,6 @@ footer {
 
   .post-card {
     grid-template-columns: 130px 1fr;
-  }
-
-  .footer-links {
-    grid-template-columns: 1fr;
   }
 }
 
