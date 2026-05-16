@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { Instagram, Mail } from "lucide-react";
 import {
   contact,
   galleryImages,
@@ -555,26 +554,61 @@ function NotFoundPage() {
 }
 
 function Footer() {
+  const marqueeText = "Art venue | Seasonal menu | Events | Wine pairing";
+  const marqueeItems = Array.from({ length: 16 }, (_, index) => `${marqueeText}-${index}`);
+
   return (
     <footer className="site-footer">
+      <div className="footer-marquee" aria-hidden="true">
+        {marqueeItems.map((item) => (
+          <span key={item}>{marqueeText}</span>
+        ))}
+      </div>
       <div className="footer-container">
-        <p className="footer-copy">&copy; Kai Maison</p>
-        <a className="footer-address" href={links.map} target="_blank" rel="noreferrer">
-          {contact.addressLine1}, {contact.addressLine2}
-        </a>
-        <div className="footer-icons" aria-label="Kai Maison social links">
-          <a href={links.instagram} target="_blank" rel="noreferrer" aria-label="Kai Maison Instagram">
-            <Instagram size={18} strokeWidth={1.45} aria-hidden="true" />
-          </a>
-          <a href={links.email} aria-label="Email Kai Maison">
-            <Mail size={19} strokeWidth={1.45} aria-hidden="true" />
+        <div className="footer-column">
+          <p>
+            <span aria-hidden="true">📍</span>
+            <a href={links.map} target="_blank" rel="noreferrer">
+              {contact.addressLine1}, {contact.addressLine2}
+            </a>
+          </p>
+          <p>
+            <span aria-hidden="true">🕒</span>
+            Mon - Son: 12:00 pm - 12:00 am (midnight)
+          </p>
+          <a className="footer-reservation button-reservierung" href={links.reservation} target="_blank" rel="noreferrer">
+            Reservations
           </a>
         </div>
-      </div>
-      <div className="footer-credit" aria-label="Coded by TUTTYLAB">
-        <a href={links.credit} target="_blank" rel="noreferrer">
-          Coded by TUTTYLAB
-        </a>
+
+        <div className="footer-column">
+          <p>
+            <span aria-hidden="true">✉️</span>
+            <a href={links.email}>{contact.email}</a>
+          </p>
+          <p>
+            <span aria-hidden="true">📞</span>
+            <a href={links.phone}>{contact.phone}</a>
+          </p>
+        </div>
+
+        <div className="footer-column">
+          <p>
+            <span>Instagram</span>
+            <a href={links.instagram} target="_blank" rel="noreferrer">
+              @kaimaisonberlin
+            </a>
+          </p>
+        </div>
+
+        <div className="footer-column">
+          <p>© 2026 Kai Maison. All Rights Reserved.</p>
+          <p>
+            <a className="footer-credit-link" href={links.credit} target="_blank" rel="noreferrer">
+              Coded by TUTTYLAB
+            </a>
+          </p>
+        </div>
       </div>
     </footer>
   );
