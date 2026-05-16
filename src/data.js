@@ -20,6 +20,7 @@ export const navItems = [
 
 export const images = {
   logo: asset("kaimaison-logo.svg"),
+  instagramLogo: asset("instagram-logo.svg"),
   hero: asset("entrance-arch.webp"),
   neon: asset("neon-window.webp"),
   neonArch: asset("neon-arch.webp"),

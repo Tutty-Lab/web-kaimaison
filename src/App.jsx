@@ -555,54 +555,62 @@ function NotFoundPage() {
 
 function Footer() {
   const marqueeText = "Art venue | Seasonal menu | Events | Wine pairing";
-  const marqueeItems = Array.from({ length: 16 }, (_, index) => `${marqueeText}-${index}`);
+  const marqueeItems = Array.from({ length: 16 }, (_, index) => index);
 
   return (
     <footer className="site-footer">
       <div className="footer-marquee" aria-hidden="true">
-        {marqueeItems.map((item) => (
-          <span key={item}>{marqueeText}</span>
+        {marqueeItems.map((index) => (
+          <span key={index}>{marqueeText}</span>
         ))}
       </div>
       <div className="footer-container">
-        <div className="footer-column">
-          <p>
-            <span aria-hidden="true">📍</span>
+        <div className="footer-column footer-column-address">
+          <p className="footer-line">
+            <span className="footer-icon" aria-hidden="true">
+              {"\uD83D\uDCCD"}
+            </span>
             <a href={links.map} target="_blank" rel="noreferrer">
               {contact.addressLine1}, {contact.addressLine2}
             </a>
           </p>
-          <p>
-            <span aria-hidden="true">🕒</span>
-            Mon - Son: 12:00 pm - 12:00 am (midnight)
+          <p className="footer-line">
+            <span className="footer-icon" aria-hidden="true">
+              {"\uD83D\uDD52"}
+            </span>
+            <span>Mon - Son: 12:00 pm - 12:00 am (midnight)</span>
           </p>
           <a className="footer-reservation button-reservierung" href={links.reservation} target="_blank" rel="noreferrer">
             Reservations
           </a>
         </div>
 
-        <div className="footer-column">
-          <p>
-            <span aria-hidden="true">✉️</span>
+        <div className="footer-column footer-column-contact">
+          <p className="footer-line">
+            <span className="footer-icon" aria-hidden="true">
+              {"\u2709\uFE0F"}
+            </span>
             <a href={links.email}>{contact.email}</a>
           </p>
-          <p>
-            <span aria-hidden="true">📞</span>
+          <p className="footer-line">
+            <span className="footer-icon" aria-hidden="true">
+              {"\uD83D\uDCDE"}
+            </span>
             <a href={links.phone}>{contact.phone}</a>
           </p>
         </div>
 
-        <div className="footer-column">
-          <p>
-            <span>Instagram</span>
-            <a href={links.instagram} target="_blank" rel="noreferrer">
-              @kaimaisonberlin
+        <div className="footer-column footer-column-social">
+          <p className="footer-social">
+            <span className="footer-social-label">Instagram</span>
+            <a href={links.instagram} target="_blank" rel="noreferrer" aria-label="Kai Maison on Instagram">
+              <img className="ig-svg" src={images.instagramLogo} alt="" />
             </a>
           </p>
         </div>
 
-        <div className="footer-column">
-          <p>© 2026 Kai Maison. All Rights Reserved.</p>
+        <div className="footer-column footer-column-legal">
+          <p>&copy; 2026 Kai Maison. All Rights Reserved.</p>
           <p>
             <a className="footer-credit-link" href={links.credit} target="_blank" rel="noreferrer">
               Coded by TUTTYLAB
