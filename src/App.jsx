@@ -26,6 +26,11 @@ function localHref(path) {
   return `${base}${clean.replace(/^\//, "")}`;
 }
 
+function findPostByPath(path) {
+  const clean = normalizePath(path);
+  return [...pressItems, ...eventItems].find((item) => normalizePath(item.href) === clean) || null;
+}
+
 function App() {
   const [path, setPath] = useState(() => normalizePath(window.location.pathname));
 
@@ -49,6 +54,12 @@ function App() {
   };
 
   const page = useMemo(() => {
+    const post = findPostByPath(path);
+
+    if (post) {
+      return <PostDetailPage item={post} onNavigate={navigate} />;
+    }
+
     switch (path) {
       case "/":
         return <HomePage onNavigate={navigate} />;
@@ -57,9 +68,9 @@ function App() {
       case "/about":
         return <AboutPage onNavigate={navigate} />;
       case "/press":
-        return <ListPage items={pressItems} title="Press" />;
+        return <ListPage items={pressItems} title="Press" onNavigate={navigate} />;
       case "/events":
-        return <ListPage items={eventItems} title="Events" showOlder />;
+        return <ListPage items={eventItems} title="Events" showOlder onNavigate={navigate} />;
       case "/functions-catering":
         return <FunctionsPage />;
       case "/gift-cards":
@@ -621,7 +632,13 @@ function AboutPage({ onNavigate }) {
   );
 }
 
-function ListPage({ items, showOlder = false }) {
+function ListPage({ items, showOlder = false, onNavigate }) {
+  const handleReadMore = (event, href) => {
+    if (!href || !onNavigate) return;
+    event.preventDefault();
+    onNavigate(href);
+  };
+
   return (
     <section className="page-shell list-shell">
       <div className="list-grid">
@@ -636,9 +653,8 @@ function ListPage({ items, showOlder = false }) {
             <MotionHeading>{item.title}</MotionHeading>
             <p>{item.summary}</p>
             <a
-              href={item.href ? `https://www.elginsgn.com${item.href}` : "#read-more"}
-              target={item.href ? "_blank" : undefined}
-              rel={item.href ? "noreferrer" : undefined}
+              href={item.href ? localHref(item.href) : "#read-more"}
+              onClick={(event) => handleReadMore(event, item.href)}
             >
               Read More
             </a>
@@ -647,6 +663,32 @@ function ListPage({ items, showOlder = false }) {
       </div>
       {showOlder && <button className="older-button" type="button">Older Posts</button>}
     </section>
+  );
+}
+
+function PostDetailPage({ item, onNavigate }) {
+  const parentHref = item.href?.startsWith("/events") ? "/events" : "/press";
+  const parentLabel = parentHref === "/events" ? "Events" : "Press";
+
+  const handleBack = (event) => {
+    event.preventDefault();
+    onNavigate(parentHref);
+  };
+
+  return (
+    <article className="page-shell post-detail">
+      <a className="post-back" href={localHref(parentHref)} onClick={handleBack}>
+        Back to {parentLabel}
+      </a>
+      {item.image && (
+        <div className="post-detail-img" data-motion="image-clip">
+          <SmartImage src={item.image} alt={item.title} />
+        </div>
+      )}
+      <time dateTime={item.date}>{formatDate(item.date)}</time>
+      <MotionHeading as="h1" className="post-title">{item.title}</MotionHeading>
+      <p className="post-summary">{item.summary}</p>
+    </article>
   );
 }
 
