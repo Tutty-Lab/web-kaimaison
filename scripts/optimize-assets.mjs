@@ -43,7 +43,8 @@ async function generatedAssetsComplete() {
   const required = [
     ...assetMap.flatMap(([, outputName]) => [`${outputName}.webp`, `${outputName}.jpg`]),
     "kaimaison-logo.svg",
-    "kai-maison-menu.pdf",
+    "menu-food.pdf",
+    "menu-drinks.pdf",
   ];
 
   const checks = await Promise.all(
@@ -90,8 +91,13 @@ await fs.copyFile(
 );
 
 await fs.copyFile(
-  path.join(sourceDir, "BALKON KAI MAISON.pdf"),
-  path.join(outputDir, "kai-maison-menu.pdf"),
+  path.join(sourceDir, "MENU_INNENSEITEN_FOOD.pdf"),
+  path.join(outputDir, "menu-food.pdf"),
 );
 
-console.log(`Generated ${assetMap.length * 2} responsive images, logo, and PDF in ${outputDir}`);
+await fs.copyFile(
+  path.join(sourceDir, "drink menu-final (mail).pdf"),
+  path.join(outputDir, "menu-drinks.pdf"),
+);
+
+console.log(`Generated ${assetMap.length * 2} responsive images, logo, and menu PDFs in ${outputDir}`);

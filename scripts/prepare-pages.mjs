@@ -5,16 +5,17 @@ const distDir = path.join(process.cwd(), "dist");
 const indexPath = path.join(distDir, "index.html");
 
 const routes = [
+  "a-la-carte-menu",
+  "about",
+  "press",
+  "events",
+  "functions-catering",
+  "gift-cards",
+  "contact",
   "en",
   "en/menu",
-  "en/about",
-  "en/press",
-  "en/events",
   "en/functions",
   "en/giftcards",
-  "en/contact",
-  "en/press/michelin-guide-vietnam",
-  "en/events/michelin-guide-vietnam",
 ];
 
 await fs.copyFile(indexPath, path.join(distDir, "404.html"));
