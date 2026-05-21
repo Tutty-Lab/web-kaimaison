@@ -2,6 +2,7 @@ import { useEffect } from "react";
 
 const MOTION_SELECTOR = '[data-motion]:not([data-motion="menu-item"])';
 const PARALLAX_SELECTOR = "[data-parallax]";
+const SCROLLED_CLASS = "has-scrolled";
 
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
@@ -42,10 +43,20 @@ export function useOjigiMotion(routeKey) {
     let frame = 0;
     let observer;
 
+    const updateScrolledState = () => {
+      document.body.classList.toggle(SCROLLED_CLASS, window.scrollY > 12);
+    };
+
     if (reducedMotion.matches) {
       motionElements.forEach(revealElement);
       parallaxElements.forEach((element) => element.style.setProperty("--parallax-y", "0px"));
-      return undefined;
+      updateScrolledState();
+      window.addEventListener("scroll", updateScrolledState, { passive: true });
+
+      return () => {
+        window.removeEventListener("scroll", updateScrolledState);
+        document.body.classList.remove(SCROLLED_CLASS);
+      };
     }
 
     motionElements.forEach((element) => element.classList.remove("is-visible"));
@@ -105,6 +116,7 @@ export function useOjigiMotion(routeKey) {
 
     const updateViewportMotion = () => {
       frame = 0;
+      updateScrolledState();
       revealNearViewport();
       updateParallax();
     };
@@ -122,6 +134,7 @@ export function useOjigiMotion(routeKey) {
       observer.disconnect();
       window.removeEventListener("scroll", requestViewportMotionUpdate);
       window.removeEventListener("resize", requestViewportMotionUpdate);
+      document.body.classList.remove(SCROLLED_CLASS);
 
       if (frame) {
         cancelAnimationFrame(frame);

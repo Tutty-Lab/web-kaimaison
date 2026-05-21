@@ -1,50 +1,629 @@
-const asset = (name) => `${import.meta.env.BASE_URL}generated/elgin/${name}`;
-const sq = (path) => `https://images.squarespace-cdn.com/content/v1/66cd458eda00191a2a7e4baf/${path}`;
+const generated = (name) => `${import.meta.env.BASE_URL}generated/${name}`;
+const kai = (name) => generated(`kai/${name}`);
 
 export const images = {
-  logoGreen: asset("logo-green.png"),
-  logoPink: asset("logo-pink.png"),
-  hero: asset("hero-table.jpg"),
-  aboutHero: sq("70360ed5-ba9a-464d-a6c4-70da42d7c98b/240824_Elgin11845.jpg?format=1500w"),
-  aboutMenu: sq("25d67342-7d83-45a3-a686-35934503f783/240824_Elgin11680.jpg?format=1500w"),
-  teamMimi: sq("395467d9-bb7d-47cf-9664-948cd252e60c/mimi.jpg?format=1000w"),
-  teamDoug: sq("6e48f8ec-9e18-4ed9-8c6a-811436b842b6/doug.jpg?format=1000w"),
-  teamDipti: sq("a370bc3e-af7e-4064-918f-405e8bb27d19/dipti.jpg?format=1000w"),
-  chef: asset("chef-toss.jpg"),
-  menuHand: asset("menu-hand.jpg"),
-  wine: asset("wine-bottle.jpg"),
-  dessert: asset("dessert.jpg"),
-  grill: asset("grill.jpg"),
-  coasters: asset("coasters.jpg"),
-  plateSocial: asset("plate-social.jpg"),
-  foodPlate: asset("food-plate.jpg"),
-  dining: asset("dining-room.jpg"),
-  wagfg: asset("wagfg.png"),
-  pressVnNews: asset("press-vnnews.jpg"),
-  pressTravelLeisure: asset("press-travel-leisure.jpg"),
-  pressJovel: asset("press-jovel.jpg"),
-  eventBubbles: asset("event-bubbles.jpg"),
-  eventElginTurns3: asset("event-elgin-turns-3.jpg"),
-  eventWomensDay: asset("event-womens-day.jpg"),
-  eventFestive24: asset("event-festive24.jpg"),
-  eventWelcomeParty: asset("event-welcome-party.jpg"),
+  logo: generated("kai-maison-logo.svg"),
+  hero: kai("home-bar.webp"),
+  aboutHero: kai("contact-hall.webp"),
+  aboutMenu: generated("dining-room.webp"),
+  teamMimi: kai("drink-guest.webp"),
+  teamDoug: generated("carved-chair.webp"),
+  teamDipti: generated("neon-window.webp"),
+  chef: generated("bar-tables.webp"),
+  menuHand: kai("menu-table.webp"),
+  wine: kai("drink-guest.webp"),
+  dessert: kai("dish-fish.webp"),
+  grill: kai("dish-beef.webp"),
+  coasters: kai("dish-duck.webp"),
+  plateSocial: kai("menu-table.webp"),
+  foodPlate: kai("dish-fish.webp"),
+  dining: generated("dining-room.webp"),
+  entrance: generated("entrance-arch.webp"),
+  neon: generated("neon-window.webp"),
+  tableCorner: generated("corner-table.webp"),
+  tableRound: generated("round-table.webp"),
+  goldMirror: generated("gold-mirror.webp"),
+  gardenTable: generated("garden-table.webp"),
+  windowTable: generated("window-table.webp"),
+  terrace: generated("terrace-chairs.webp"),
+  canal: generated("canal-trees.webp"),
+  prepCounter: generated("prep-counter.webp"),
+  illustration: kai("illustration-home.webp"),
+  dishBeef: kai("dish-beef.webp"),
+  dishFish: kai("dish-fish.webp"),
+  dishDuck: kai("dish-duck.webp"),
+};
+
+export const photoStrips = {
+  about: [
+    { src: images.entrance, alt: "Kai Maison entrance arch" },
+    { src: images.goldMirror, alt: "Kai Maison mirror and warm lighting" },
+    { src: images.dining, alt: "Kai Maison dining room" },
+    { src: images.aboutHero, alt: "Kai Maison hallway" },
+  ],
+  menu: [
+    { src: images.menuHand, alt: "Kai Maison dishes on a marble table" },
+    { src: images.dishFish, alt: "Kai Maison fish dish" },
+    { src: images.dishDuck, alt: "Kai Maison duck dish" },
+    { src: images.dishBeef, alt: "Kai Maison beef dish" },
+  ],
+  form: [
+    { src: images.hero, alt: "Kai Maison bar" },
+    { src: images.tableRound, alt: "Kai Maison round table" },
+    { src: images.tableCorner, alt: "Kai Maison corner table" },
+    { src: images.aboutHero, alt: "Kai Maison hallway detail" },
+  ],
+  contact: [
+    { src: images.aboutHero, alt: "Kai Maison hallway" },
+    { src: images.entrance, alt: "Kai Maison entrance" },
+    { src: images.hero, alt: "Kai Maison bar room" },
+    { src: images.canal, alt: "Kai Maison neighborhood view" },
+  ],
+};
+
+export const menuDocuments = {
+  food: {
+    label: "Food",
+    pdf: generated("menu-food.pdf"),
+    note: "A la carte dishes from Kai Maison's current food menu.",
+    sections: [
+      {
+        title: "Appetizers",
+        wide: true,
+        groups: [
+          {
+            title: "Cold Appetizers",
+            items: [
+              {
+                name: "Ceviche 44 Club",
+                price: "10.5",
+                desc:
+                  "herbal-cured salmon, pomegranate, green apple, avocado, sun-dried cherry tomatoes, vietnamese herbs, lime olive oil dressing",
+              },
+              {
+                name: "Salmon Tataki",
+                price: "10.5",
+                desc: "fresh salmon, goat horn pepper, dill, cherry tomatoes, orange, passionfruit dressing",
+              },
+              {
+                name: "Beef Tartare",
+                price: "13",
+                desc: "angus tenderloin, pickled cucumber, capers, vietnamese basil, olive oil",
+              },
+              {
+                name: "Grilled Octopus Salad",
+                price: "13",
+                desc:
+                  "beetroot, cherry tomatoes, avocado, goat horn pepper, coriander, crispy sliced almonds, sesame dressing",
+              },
+              {
+                name: "Kai Caesar Salad",
+                price: "10.5",
+                desc: "romaine lettuce, prawns, black sesame, parmesan cheese, crispy sliced almonds",
+              },
+              {
+                name: "Hamachi \"Tai Chanh\"",
+                price: "16.5",
+                desc: "green apple, olive oil, dill oil, black garlic jelly, lime dressing, cherry tomatoes, physalis",
+              },
+              {
+                name: "Tuna Ponzu Au Com",
+                price: "11.5",
+                desc: "fresh tuna, goat horn pepper, hanoi green rice flakes, ponzu soy sauce",
+              },
+              {
+                name: "Saigon Beef Taco",
+                price: "6",
+                desc:
+                  "braised beef with vietnamese gac, star anise & black cardamom, pickles, coriander, homemade spicy mayo",
+              },
+            ],
+          },
+          {
+            title: "Hot Appetizers",
+            items: [
+              {
+                name: "Sesame Crispy Prawn",
+                price: "8",
+                desc: "tiger prawns, black sesame, crispy sliced almonds, homemade kai mayonnaise",
+              },
+              {
+                name: "Grilled Hamachi",
+                price: "17",
+                desc: "grilled pineapple, vinaigrette salad, yuzu lemon sauce",
+              },
+              {
+                name: "Co To Scallop",
+                price: "9.5",
+                desc: "glass noodles, carrot, coriander, crispy sweet potato, sweet & sour fish sauce",
+              },
+              {
+                name: "Tropical Angus",
+                price: "11.5",
+                desc: "beef tenderloin, grilled pineapple, salsa, vietnamese herbs, sweet & sour fish sauce",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        title: "Soups",
+        groups: [
+          {
+            items: [
+              {
+                name: "Highland Mushroom",
+                price: "9.5",
+                desc: "seasonal mushrooms, pan-seared scallops, coriander",
+              },
+              {
+                name: "Pumpkin",
+                price: "8.5",
+                desc: "grilled prawns, croutons, ginger, onion, cinnamon, fresh cream, olive oil",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        title: "Main Courses",
+        wide: true,
+        groups: [
+          {
+            items: [
+              {
+                name: "Stuffed Chicken Thigh",
+                price: "19",
+                desc:
+                  "stuffed chicken thigh 220g, shiitake mushrooms and vegetables, sauteed haricots verts, kai umami sauce",
+              },
+              {
+                name: "Barbary Duck Breast",
+                price: "21",
+                desc:
+                  "pan-seared duck breast 200g, homemade candied orange peel, baby broccoli, grilled seasonal mushrooms, sweet potato espuma, orange sauce",
+              },
+              {
+                name: "Striploin Beef",
+                price: "23",
+                desc:
+                  "grilled striploin beef 240g, green peppercorn sauce, baby broccoli, charred seasonal mushrooms, sweet potato espuma",
+              },
+              {
+                name: "Beef Filet Mignon",
+                price: "27",
+                desc: "beef filet mignon 220g, charred asparagus, cauliflower espuma, sesame sauce",
+              },
+              {
+                name: "Lamb Chop",
+                price: "26",
+                desc: "lamb chop 250g, grilled baby zucchini, grilled seasonal mushrooms, pumpkin espuma",
+              },
+              {
+                name: "Duck Curry",
+                price: "16",
+                desc: "crispy duck 220g, pumpkin, button mushrooms, aubergine, coconut cream, st25 fragrant rice",
+              },
+              {
+                name: "Mackerel",
+                price: "21",
+                desc: "grilled mackerel 300g, charred pineapple, salsa, shrimp oil, roasted pepper pesto",
+              },
+              {
+                name: "Salmon No.23",
+                price: "19.5",
+                desc: "pan-seared salmon 200g, charred asparagus, pumpkin espuma, passionfruit sauce",
+              },
+              {
+                name: "Kai Carbonara Udon",
+                price: "18",
+                desc: "beef bacon, scallions, pepper, parmesan, udon, butter x sake sauce, chanterelles",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        title: "Vegetarian",
+        groups: [
+          {
+            items: [
+              {
+                name: "Grilled Aubergine a l'Indochine",
+                price: "8",
+                desc: "spring onion oil, fried shallots, roasted peanuts (vn)",
+              },
+              {
+                name: "Charred Asparagus",
+                price: "8",
+                desc: "pumpkin espuma, teriyaki sauce (vn)",
+              },
+              {
+                name: "Garden Curry",
+                price: "14.5",
+                desc: "tofu, pumpkin, broccoli, button mushrooms, aubergine, coconut cream, st25 fragrant rice (vg)",
+              },
+              {
+                name: "Braised King Oyster Mushroom",
+                price: "15",
+                desc: "bok choy, shiitake mushrooms, soy sauce, st25 fragrant rice (vn)",
+              },
+              {
+                name: "Mushroom Udon Carbonara",
+                price: "16",
+                desc: "seasonal mushrooms, yellow miso, parmesan cheese (vg)",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        title: "Desserts",
+        groups: [
+          {
+            items: [
+              {
+                name: "Ha Giang Black Sticky Rice",
+                price: "7",
+                desc: "yogurt, coconut milk, vanilla ice cream",
+              },
+              {
+                name: "Creme Caramel",
+                price: "7",
+                desc: "seasonal fruits",
+              },
+              {
+                name: "Vin Rouge Poached Pear",
+                price: "9",
+                desc: "chestnut cream, almond tart, vanilla ice cream",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        title: "Sides",
+        compact: true,
+        groups: [
+          {
+            items: [
+              { name: "Baguette Toast", price: "3" },
+              { name: "Sweet Potato Fries", price: "5.5" },
+              { name: "Garlic Butter Udon", price: "4" },
+              { name: "Espuma", price: "3.5" },
+              { name: "Extra Sauce", price: "3.5" },
+              { name: "Rice Blend", price: "3" },
+            ],
+          },
+        ],
+      },
+      {
+        title: "Set Menu",
+        wide: true,
+        groups: [
+          {
+            items: [
+              {
+                name: "Kai Signature Set Menu",
+                price: "40",
+                desc: "Ceviche 44 Club / Sesame Crispy Prawn / Stuffed Chicken Thigh / Ha Giang Black Sticky Rice",
+              },
+              {
+                name: "Chef's Selection Menu",
+                price: "48",
+                desc: "Tuna Ponzu Au Com / Highland Mushroom Soup / Striploin Beef / Vin Rouge Poached Pear",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    footnote: "If you have any allergies or dietary restrictions, please inform our service team for guidance.",
+  },
+  drinks: {
+    label: "Drinks",
+    pdf: generated("menu-drinks.pdf"),
+    note: "Cocktails, wine, beer, shots and non-alcoholic drinks.",
+    sections: [
+      {
+        title: "Aperitif",
+        groups: [
+          {
+            items: [
+              { name: "Aperol Spritz", price: "7.5", desc: "aperol, prosecco, soda, orange" },
+              { name: "Lillet Raspberry", price: "7.5", desc: "lillet rouge, wild berry raspberry, strawberry" },
+              { name: "Hugo", price: "8", desc: "st. germain, cremant, mint, lime" },
+              { name: "Yuzu Sake Spritz", price: "9", desc: "sake, yuzu, prosecco, tonic, lime" },
+              { name: "Gin Tonic Tanqueray", price: "10.5", desc: "hendricks, monkey, roku, kyro + 2" },
+              { name: "Tokyo Mule", price: "11", desc: "haku vodka, ginger beer, lime, cucumber" },
+            ],
+          },
+        ],
+      },
+      {
+        title: "Signature Cocktail",
+        groups: [
+          {
+            items: [
+              { name: "Velvet Dawn", price: "9", desc: "remy martin, yuzu, cremant brut, egg white" },
+              { name: "Kaigroni", price: "10.5", desc: "gin, campari, vermouth, orange bitters" },
+              {
+                name: "Red Ember",
+                price: "10.5",
+                desc: "tequila, cointreau, lime juice, beetroot syrup, pink peppercorn, chili salt",
+              },
+              { name: "Pomelo Sour", price: "11", desc: "gin, montenegro, grapefruit, lime, angostura, egg white" },
+              { name: "Goodbye Sadness", price: "11", desc: "haku vodka, passoa liqueur, vanilla, champagne" },
+              { name: "Quiet Gray", price: "11", desc: "haku vodka, mr black liqueur, espresso" },
+              { name: "Rouge Blossom", price: "11", desc: "gin, sake, lime, strawberry, egg white" },
+              { name: "44 Club", price: "12", desc: "gin, chambord, raspberry, lime, sugar, aquafaba" },
+              { name: "Child Of Darkness", price: "12", desc: "whiskey, orange, lime, angostura bitters, egg white" },
+              { name: "Fleur de Lune", price: "12", desc: "lavender, lime, butterfly pea, gum, vanilla, vermouth, egg white" },
+            ],
+          },
+        ],
+        footnote: "(*) Vegan egg white option available",
+      },
+      {
+        title: "Wine Menu",
+        wide: true,
+        groups: [
+          {
+            title: "Bubbles",
+            note: "0.15 / 0.75",
+            items: [
+              {
+                name: "Cremant de Bordeaux | Maison Castel",
+                price: "6.5/32",
+                desc: "Cremant de Bordeaux (FR), Semillon/Sauv. Blanc, NV, 12%",
+              },
+              { name: "Veuve Pelletier", price: "50", desc: "Vin Mousseux (FR), Chardonnay, NV, 11.5%" },
+              {
+                name: "Reserve Brut | Philippe Gonet",
+                price: "80",
+                desc: "Champagne (FR), PN/Chard./PM, NV, 12%",
+              },
+            ],
+          },
+          {
+            title: "Pet-Nat",
+            items: [
+              { name: "Hang On 2023 | Soma Vines", price: "28", desc: "Pet-Nat (DE), Pinot Blanc/Chard., NV, 11%" },
+              { name: "Maria Pet Nat | Entre Vinyes", price: "33", desc: "Pet-Nat (ES), Xarel-lo/Muscat, NV, 11.5%" },
+              {
+                name: "Arktika | Anita & Hans Nittnaus",
+                price: "42",
+                desc: "Sparkling Wine (AT), St. Laurent, NV, 12%",
+              },
+            ],
+          },
+          {
+            title: "Rose",
+            items: [
+              {
+                name: "Wechsler Rose | Katharina Wechsler",
+                price: "5.5/25",
+                desc: "Rheinhessen QW (DE), Spatburg./Dornfelder, NV, 12.5%",
+              },
+              {
+                name: "Chateau de Roquefort \"Corail\" Rose",
+                price: "6.5/31.5",
+                desc: "Provence (FR), Grenache/Syrah/Cinsault/Clairette, 2023, 12.5%",
+              },
+              { name: "A Table!!! Rose | Mas del Perie", price: "42", desc: "Vin de France (FR), Malbec/Merlot/Tannat, 2023, 12%" },
+            ],
+          },
+          {
+            title: "White",
+            items: [
+              {
+                name: "Seckinger Blanc de Noir | Seckinger",
+                price: "5.5/26",
+                desc: "Pfalz QW (DE), Spatburg., NV, 12%",
+              },
+              {
+                name: "Spielberg Riesling Kabinett 2022 | Darting",
+                price: "6.5/30",
+                desc: "Pfalz QW (DE), Riesling, 2022, 10.5%",
+              },
+              {
+                name: "Root Weiss | Hareter",
+                price: "6.5/30",
+                desc: "Burgenland QW (AT), Chard./Neuburger, NV, 12.5%",
+              },
+              { name: "Nero Bianco | Seckinger", price: "32", desc: "Pfalz QW (DE), Gewurztraminer, 2023, 11.5%" },
+              {
+                name: "Le Soleillant | Jean Marie Chenivesse",
+                price: "38",
+                desc: "Cotes du Rhone Blanc (FR), Gren. Blanc/Viog./Rouss., 2023, 13.5%",
+              },
+              { name: "Dauny Sancerre | Vignoble Dauny", price: "50", desc: "Sancerre AOC (FR), Sauv. Blanc, 2023, 13%" },
+              { name: "Cecile #44 | Dornach", price: "62", desc: "Sudtirol (IT), Bronner/Solaris, 2022, 12.5%" },
+            ],
+          },
+          {
+            title: "Skin Contact",
+            note: "0.15 / 0.75",
+            items: [
+              {
+                name: "Oniric Brisat Vermell | Entre Vinyes",
+                price: "5.5/26.5",
+                desc: "Orange Wine (ES), Xarel-lo Vermell, NV, 11.5%",
+              },
+              {
+                name: "Feteasca Regala | La Sapata",
+                price: "6/28",
+                desc: "DOC Sarica Niculitel (RO), Feteasca Regala, 2023, 13%",
+              },
+              { name: "Brand & Co Elsass 2022 | Brand & Fils", price: "32", desc: "Alsace AOC (FR), Pinot Gris/Riesling/Silv., 2022, 12%" },
+              { name: "Belle Naturelle | Jurtschitsch", price: "37.5", desc: "Kamptal (AT), Natural white, NV, 12.5%" },
+              { name: "Alter 2020 | Sumenjak", price: "40", desc: "Orange Wine (SI), Chard./Riesling, 2020, 13%" },
+              {
+                name: "Kalk & Kiesel Weiss | Claus Preisinger",
+                price: "44",
+                desc: "Burgenland QW (AT), WB/GV/Muskat./Welsch., NV, 11.5%",
+              },
+              { name: "Labeja Riesling | Alex Saltaren", price: "49", desc: "Rheinhessen (DE), Riesling, NV, 11.5%" },
+              { name: "Sav'Or | Domaine de la Pinte", price: "58", desc: "Jura (FR), Savagnin (mac.), 13%" },
+            ],
+          },
+          {
+            title: "Red",
+            items: [
+              {
+                name: "Cuvee Papillon | Jean-Marie Chenivesse",
+                price: "6/29",
+                desc: "Cotes du Rhone (FR), Grenache/Syrah, NV, 13.5%",
+              },
+              {
+                name: "Chianti Classico | Le Fonti",
+                price: "6/30",
+                desc: "Toscana DOCG (IT), Sangiovese/Cab. Sauv./Merlot, 13.5%",
+              },
+              { name: "Cabernet Cubin Trocken 2018 | Darting", price: "6.5/32", desc: "Pfalz QW (DE), Cabernet Cubin, 2018, 13.5%" },
+              { name: "Puszta Libre | Claus Preisinger", price: "34", desc: "Burgenland QW (AT), Zweigelt/St. Laurent, 2023, 12%" },
+              { name: "UnRouge 2022 | Bossanova", price: "40", desc: "Abruzzen (IT), 80% Montep./20% Merlot, 2022, 13.5%" },
+              { name: "La Musa 2021 | Val Liberata", price: "44", desc: "Piemont (IT), Nebbiolo, 2021, 13.5%" },
+              { name: "Janus | Marco Merli", price: "58", desc: "Umbrien (IT), Sangiovese, 2021, 13%" },
+              { name: "Louis #38 | Dornach", price: "62", desc: "Sudtirol (IT), Pinot Nero, 2022, 10.5%" },
+            ],
+          },
+        ],
+        footnote: "(*) Information about allergens and additives is available upon request from our service staff.",
+      },
+      {
+        title: "Beer",
+        groups: [
+          {
+            title: "From Tap",
+            note: "0.3 / 0.5",
+            items: [
+              { name: "Krombacher Pils", price: "4 / 5.5" },
+              { name: "Starnberger Helles", price: "4 / 5.5" },
+            ],
+          },
+          {
+            title: "From Bottle",
+            items: [
+              { name: "Tiger", price: "4" },
+              { name: "Krombacher Weizen", price: "5" },
+              { name: "Krombacher Alkf. Weizen", price: "5" },
+            ],
+          },
+        ],
+      },
+      {
+        title: "Shots",
+        groups: [
+          {
+            title: "Vodka",
+            items: [
+              { name: "Haku Vodka | Japanese Craft Vodka (JP), 40%", price: "4" },
+              { name: "Belvedere Vodka | Polish Rye Vodka (PL), 40%", price: "6" },
+            ],
+          },
+          {
+            title: "Gin",
+            items: [
+              { name: "Roku Gin, Tanqueray, Hendrick's", price: "3.5" },
+              { name: "Berlin Dark Dry Gin | New Western Dry Gin (DE), NV, 43.3% ABV", price: "4.5" },
+              { name: "Monkey 47 | Schwarzwald Dry Gin (DE), 47%", price: "5.5" },
+              { name: "Kyro Gin - Distillery Company | FI, Rye Gin, NV, 46.3%", price: "5.5" },
+            ],
+          },
+          {
+            title: "Mezcal",
+            items: [{ name: "Montelobos Espadin, Del Maguey Tobala, San Cosme", price: "4" }],
+          },
+          {
+            title: "Whiskey",
+            items: [
+              { name: "Jameson Black Barrel | Blended Irish Whiskey (IE), NAS NV, 40% ABV", price: "4.5" },
+              { name: "Suntory Toki | Blended Japanese Whisky (JP), NAS, 43% ABV", price: "5.5" },
+              { name: "Glenfiddich 18 | Single Malt Scotch (UK), 18YO, 40%", price: "6.5" },
+              { name: "Nikka From The Barrel | Nikka JP, Blended Whisky, NV, 51.4%", price: "6.5" },
+              { name: "Hibiki Japanese Harmony - Suntory | JP, Blended Whisky, NV, 43%", price: "7.5" },
+            ],
+          },
+        ],
+      },
+      {
+        title: "Kai's Homemade",
+        groups: [
+          {
+            items: [
+              { name: "Lime Soda", price: "6", desc: "lime, mint, sugar, soda" },
+              { name: "Passion Love", price: "6.5", desc: "green tea, passion fruit, honey" },
+              { name: "Yuzu Cooler", price: "6.5", desc: "yuzu, fresh orange, soda, lime" },
+              { name: "Raspberry Night", price: "6.5", desc: "fresh raspberry, jasmine tea, mint" },
+              { name: "Palonia", price: "7.5", desc: "non alcoholic tequila, grapefruit, agave" },
+            ],
+          },
+        ],
+      },
+      {
+        title: "Coffee x Andraschko",
+        groups: [
+          {
+            items: [
+              { name: "Espresso / Double Espresso", price: "2.5/3", desc: "macchiato + 0.5" },
+              { name: "Americano", price: "3.2" },
+              { name: "Cappuccino", price: "3.5" },
+              { name: "Flat White", price: "4" },
+              { name: "Latte Macchiato", price: "4" },
+              { name: "Matcha Latte", price: "4", desc: "on ice, oat milk + 0" },
+            ],
+          },
+        ],
+      },
+      {
+        title: "Tea",
+        groups: [
+          {
+            items: [
+              { name: "Green / Jasmine", price: "3.5" },
+              { name: "Mint Lime", price: "4" },
+              { name: "Ginger Orange", price: "4" },
+              { name: "Kai's Detox", price: "4.5", desc: "dates, goji berries, ginger, mint" },
+            ],
+          },
+        ],
+      },
+      {
+        title: "Softdrinks",
+        groups: [
+          {
+            items: [
+              { name: "Coca Cola / Cola Zero", price: "3.5" },
+              { name: "Schweppes", price: "3.5", desc: "tonic, ginger ale, ginger beer" },
+              { name: "Filtered Water", price: "2 / 5", desc: "0.25 / 0.75" },
+              { name: "Voslauer", price: "3 / 6", desc: "still, sparkling" },
+              { name: "Rauch", price: "4", desc: "apple, mango, rhubarb" },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 };
 
 export const site = {
-  name: "Elgin",
-  title: "Elgin - Restaurant & Wine Bar",
+  name: "Kai Maison",
+  title: "Kai Maison - Table et Bar",
   description:
-    "Elgin is a casual dining restaurant and wine bar located in the heart of District 1, Ho Chi Minh City, Vietnam.",
-  address: "27 Mac Dinh Chi, Dakao Ward, Ho Chi Minh City",
-  addressShort: "27 Mac Dinh Chi",
-  ward: "Dakao Ward, Ho Chi Minh City",
-  email: "eat@elginsgn.com",
-  phone: "028 3535 2957",
-  hours: "DINNER | Monday-Saturday 6pm-10pm, Sunday 5pm-9pm",
-  reservation: "https://www.sevenrooms.com/reservations/elgin/website",
-  instagram: "https://www.instagram.com/elgin.sgn",
-  facebook: "https://www.facebook.com/elgin.sgn",
-  tiktok: "https://www.tiktok.com/@elgin.sgn",
+    "Kai Maison is a modern casual dining restaurant and art and music venue on Berlin's Landwehr Canal.",
+  address: "Maybachufer 23, 12047 Berlin",
+  addressShort: "Maybachufer 23",
+  ward: "12047 Berlin",
+  email: "kaimaisonberlin@gmail.com",
+  phone: "030 88 77 33 98",
+  phoneHref: "+493088773398",
+  hours: "Monday - Sunday: 12:00 pm - 12:00 am",
+  reservation: "https://www.opentable.de/r/kai-maison-reservations-berlin?restref=333144&lang=en-US",
+  maps: "https://www.google.com/maps/search/?api=1&query=Maybachufer%2023%2C%2012047%20Berlin",
+  instagram: "https://www.instagram.com/kaimaison.berlin",
+  facebook: "https://www.facebook.com/kaimaisonberlin",
+  tiktok: "https://www.tiktok.com/@kaimaisonberlin",
 };
 
 export const navItems = [
@@ -63,112 +642,112 @@ export const pressItems = [
     title: "The WA Good Food Guide",
     date: "2025-11-16",
     summary: "WAGFG's monthly round-up of what the team is eating, drinking, booking and buying",
-    image: asset("press-wagfg.png"),
+    image: images.hero,
     href: "/press/wa-good-food-guide",
   },
   {
     title: "Michelin 2025",
     date: "2025-06-05",
     summary: "Featured in Michelin Guide Vietnam for the third year",
-    image: asset("press-michelin25.png"),
+    image: images.entrance,
     href: "/press/michelin-2025",
   },
   {
     title: "Tatler Asia",
     date: "2024-12-27",
     summary: "Modern Asian cuisine with sophisticated flavors and...",
-    image: asset("press-tatler.jpg"),
+    image: images.dishFish,
     href: "/press/tatler-asia",
   },
   {
     title: "Viet Nam News",
     date: "2024-12-22",
     summary: "Michelin-approved: Why Elgin is the talk of District 1",
-    image: images.pressVnNews,
+    image: images.aboutHero,
     href: "/press/viet-nam-news",
   },
   {
     title: "iknowthesomm.com",
     date: "2024-04-17",
     summary: "It's all about the Wines | Food | Bars",
-    image: sq("1725098243588-5U2U36LXMCIRV46B6GEQ/elgin-front.jpg?format=1000w"),
+    image: images.wine,
     href: "/press/iknowthesommcom",
   },
   {
     title: "Vetter Magazine",
     date: "2024-04-17",
     summary: "A place that is both stylish and delicious",
-    image: sq("1725097618422-XVP91SRBFVR3B1JH3UDW/295541880_146242398054301_8429721431216583255_n-e1660533179121.jpg?format=1000w"),
+    image: images.tableCorner,
     href: "/press/vetter-magazine",
   },
   {
     title: "Michelin Guide Vietnam",
     date: "2024-04-01",
     summary: "Michelin Guide 2023 and 2024",
-    image: sq("1724728721320-A4EN6HNS0NG3P1AVFRGU/230809_Elgin-9-min.jpeg?format=1000w"),
+    image: images.goldMirror,
     href: "/press/michelin",
   },
   {
     title: "Vezzi",
     date: "2023-12-19",
     summary: "Ho Chi Minh Restaurants Guide",
-    image: sq("1725100283963-GU5PVVAFQ962G2F86D1E/toast+copy.jpg?format=1000w"),
+    image: images.menuHand,
     href: "/press/vezzi",
   },
   {
     title: "The B.A.R. Awards",
     date: "2023-12-14",
     summary: "The top five in the Best Restaurant category",
-    image: sq("1725098680161-ISXBWRIU2XPYJ3LASK1O/bars-award.png?format=1000w"),
+    image: images.neon,
     href: "/press/the-bars-awards",
   },
   {
     title: "Travel and Leisure Taste Makers",
     date: "2023-11-30",
     summary: "T+L Taste Makers 25 Best Restaurants in Vietnam",
-    image: images.pressTravelLeisure,
+    image: images.dining,
     href: "/press/travel-and-leisure",
   },
   {
     title: "Leisure and Travel",
     date: "2023-10-29",
     summary: "Michelin Guide Selected dining series",
-    image: sq("1725100544335-OIXBBM3X8Q5CJYOJPCFU/chef-collab.jpg?format=1000w"),
+    image: images.chef,
     href: "/press/leisure-and-travel",
   },
   {
     title: "Prestige Hong Kong - Logan Hester",
     date: "2023-07-14",
     summary: "Chef Eats: Logan Hester's Favourite Restaurants in HCMC",
-    image: sq("1725015324667-125A66JAHA51RS2VK33E/prestige.png?format=1000w"),
+    image: images.illustration,
     href: "/press/prestige",
   },
   {
     title: "Dot Magazine",
     date: "2022-12-29",
     summary: "The Best New Bars And Restaurants In Saigon In 2022",
-    image: sq("1725099382230-CK64PTG7OZ69KVAOLAMV/dot.jpg?format=1000w"),
+    image: images.tableRound,
     href: "/press/dot-magazine",
   },
   {
     title: "Sketch magazine",
     date: "2022-10-25",
     summary: "Enjoy everything from food to drinks",
-    image: sq("1725097925285-ROT8RP2WWJ9NBDQM1RZY/ElginSaigon_VNS_South_Now_Open_202211_photo_001.jpg?format=1000w"),
+    image: images.terrace,
     href: "/press/sketch-magazine",
   },
   {
     title: "Barrons",
     date: "2022-10-21",
     summary: "Great Escapes: Ho Chi Minh City, Vietnam's Buzzing, Glitzy Jewel",
-    image: sq("1725099778424-7KHPBFQQPZOV8DKRYOBJ/barrons.jpg?format=1000w"),
+    image: images.canal,
     href: "/press/barrons",
   },
   {
     title: "Jovel Chan Blog",
     date: "2022-10-10",
     summary: "My top 25 restaurants in Ho Chi Minh City",
-    image: images.pressJovel,
+    image: images.dishDuck,
     href: "/press/blog-post-title-four-2cewk",
   },
 ];
@@ -178,262 +757,140 @@ export const eventItems = [
     title: "Good Wines Club 2026 - Grapes Gone Global",
     date: "2026-04-12",
     summary: "The Good Wines Club is back, and we're taking it global. Swing by, sip up, and go global.",
-    image: asset("event-grapes.jpg"),
+    image: images.wine,
     href: "/events/good-wines-club-4c6wg",
   },
   {
     title: "Festive Menu 2025",
     date: "2025-12-09",
     summary: "Our Festive Menu is here, and we can't wait to celebrate with you!",
-    image: asset("event-festive25.jpg"),
+    image: images.menuHand,
     href: "/events/festive-menu",
   },
   {
     title: "Feed Me Menu",
     date: "2025-11-15",
     summary: "Our set menus are here for when you want a little bit of everything!",
-    image: asset("event-feedme.jpg"),
+    image: images.dishBeef,
     href: "/events/feed-me-menu",
   },
   {
     title: "Good Wines Club - Unlock your PAlate",
     date: "2025-08-29",
     summary: "The Good Wines Club is back. Collect experiences, sip smart, and have a blast along the way.",
-    image: images.eventBubbles,
+    image: images.hero,
     href: "/events/good-wines-club",
   },
   {
     title: "Elgin Turns 3!",
     date: "2025-06-19",
     summary: "We're throwing a birthday bash the Elgin way: bold flavours, tasty bites, and a menu made to be shared.",
-    image: images.eventElginTurns3,
+    image: images.entrance,
     href: "/events/elgin-turns-3",
   },
   {
     title: "Women's Day at Elgin",
     date: "2025-03-08",
     summary: "Treat yourselves to a night of good food, yummy wines, and even better company!",
-    image: images.eventWomensDay,
+    image: images.dishDuck,
     href: "/events/womens-day-at-elgin",
   },
   {
     title: "Elgin's festive menu 2024",
     date: "2024-12-12",
     summary: "Our annual Festive Menu is here, so join us in spreading the holiday cheer!",
-    image: images.eventFestive24,
+    image: images.goldMirror,
     href: "/events/elgins-festive-menu",
   },
   {
     title: "Welcome Party - Chef Aldwin",
     date: "2024-11-30",
     summary: "Welcoming our new Chef in Residence! A La Carte. 6PM - Late.",
-    image: images.eventWelcomeParty,
+    image: images.dining,
     href: "/events/welcome-party-chef-aldwin-hidajat",
   },
   {
     title: "Elgin's American Thanksgiving",
     date: "2024-11-28",
     summary: "Offering our annual special Thanksgiving sharing set menu with your favorite family-style holiday treats!",
-    image: sq("1732192779397-6ABOBSV6V78Y6BPJFEZ7/american-thanksgiving-01.jpg?format=1000w"),
+    image: images.dishFish,
     href: "/events/elgins-american-thanksgiving",
   },
   {
     title: "Vietnamese Women's Day",
     date: "2024-10-20",
     summary: "Whether it be your mom, your sister, your bestie, or your better half - we've got you covered!",
-    image: sq("1728999444440-AZ7OWVTJ4VX71VAP9ZO5/womensday-01.jpg?format=1000w"),
+    image: images.wine,
     href: "/events/vietnamese-womens-day",
   },
   {
     title: "Elgin's Canadian Thanksgiving",
     date: "2024-10-14",
     summary: "Offering our annual special Thanksgiving sharing set menu with your favorite holiday treats!",
-    image: sq("1728606354584-3LTHKMRYOS0UDN2KG581/elgin-canadian-thanksgiving.jpg?format=1000w"),
+    image: images.tableCorner,
     href: "/events/elgins-canadian-thanksgiving",
   },
   {
     title: "Shroom Dinner x Little Bear",
     date: "2024-09-28",
     summary: "An unforgettable evening as we welcome Chef Nhat Duy and Chef Truong Hiep from Little Bear to Elgin",
-    image: sq("c861e069-4b0c-491f-891c-0f2f123c3161/shroom-dinner.jpeg?format=1000w"),
+    image: images.tableRound,
     href: "/events/shroom-dinner-x-little-bear",
   },
   {
     title: "The Good Wines Club Vol. VII",
     date: "2024-09-15",
     summary: "Join a Masterclass of Crystal",
-    image: sq("1725451296657-88W9OFQR3J3NCGYI9H7T/457660184_122188557320080200_5328482752139660449_n+copy.jpg?format=1000w"),
+    image: images.neon,
     href: "/events/the-good-wines-clubvol-vii",
   },
   {
     title: "Elgin 2.0 Launch Party",
     date: "2024-09-07",
     summary: "We love a good party at Elgin!",
-    image: sq("1729129140184-PKE7HB82G6LVM5XKH10J/relaunch-02.jpg?format=1000w"),
+    image: images.aboutHero,
     href: "/events/elgin-20-launch-party",
   },
   {
     title: "Potluck at Little Bear",
     date: "2024-07-13",
     summary: "Potluck Dinner - Elgin Comes to Bear's House",
-    image: sq("1725240518629-FSS204PN87UN0294COO9/f0a987666f73c82d9162.jpg?format=1000w"),
+    image: images.chef,
     href: "/events/potluck-at-little-bear-2024",
   },
   {
     title: "Michelin 2024",
     date: "2024-06-27",
     summary: "Michelin Guide Vietnam",
-    image: sq("1725240254979-8788X1RNG0KIMI6LVN2V/michelin-vietnam.jpg?format=1000w"),
+    image: images.illustration,
     href: "/events/michelin-2024",
   },
   {
     title: "G'day Gourmet",
     date: "2024-06-22",
     summary: "Chef Josh Fry joined us for a one-night-only Aussie affair",
-    image: sq("1725239684083-7RTGBGWEBEGBN855JBNE/ELGIN+X+JOSH.jpg?format=1000w"),
+    image: images.terrace,
     href: "/events/gday-gourmet",
   },
   {
     title: "2nd Birthday",
     date: "2024-06-08",
     summary: "A celebration of another year of Elgin",
-    image: sq("1725239450642-YH1V022DNJ730OO33ADO/COVER.JPG?format=1000w"),
+    image: images.canal,
     href: "/events/2nd-bday-2024",
   },
   {
     title: "To Do Canada - Wildlight x Elgin",
     date: "2024-02-01",
     summary: "World Chef Exchange Collab in Vancouver, Canada",
-    image: sq("1725499436565-XRRKE1OZJ9DMAKQ09643/wildlight-collab.jpg?format=1000w"),
+    image: images.dishBeef,
     href: "/events/to-do-canada-wildlight-x-elgin-2024",
   },
   {
     title: "2023 Wrap Up",
     date: "2024-01-01",
     summary: "Fond memories of pop-ups, collaborations and achievements",
-    image: sq("1725239108845-RZJGOJFLXI8YGGH40ZR7/COVER.jpg?format=1000w"),
+    image: images.dishFish,
     href: "/events/2022-wrap-up",
-  },
-];
-
-export const foodMenuSections = [
-  {
-    title: "Small Plates",
-    items: [
-      ["100 pc", "Lamb Skewers", "cumin, chili"],
-      ["95 pc", "Fried Potato Cake", "hash brown, whipped bottarga, ikura"],
-      ["250 pc", "Chutoro Toast", "shokupan, yuzu aioli, white soy dressing, bottarga"],
-      ["160 pc", "Hokkaido Scallops", "mung bean noodle, ginger oil, xo sauce"],
-      ["270", "Seabass Crudo", "mala vinaigrette, burnt corn crema, shiso, tapioca crisps, grapes"],
-      ["335", "Hamachi Crudo", "watercress, green bean, peas, green chili sauce, green coconut curry, shrimp crackers"],
-      ["465", "Wagyu Tartare (80g)", "truffle-ponzu aioli, yuzu pickled daikon, nori, spring onion, crispy shallot & garlic, sesame, potato chips"],
-      ["200", "Steamed Clams", "miso-lemongrass broth, herbs, chili, sourdough"],
-      ["240", "Peking Duck Croquettes", "duck maryland, quince hoisin, cucumber & radish pickle, duck liver parfait, Chinese pancakes"],
-      ["120", "Charred Miso Cabbage", "miso aioli, potato-nori & shiitake crunch, sesame, spring onion"],
-      ["130", "Cucumber and Fungus Salad", "pickled daikon, white fungus, black fungus, mandarin dressing"],
-    ],
-  },
-  {
-    title: "Big Plates",
-    items: [
-      ["350", "Grilled Barramundi (200g)", "tamarind cashew dressing, burnt lime"],
-      ["520", "Grilled Whole Pomfret", "roasted cherry tomatoes, sambal, kaffir"],
-      ["385", "Half Chicken 'Ayam Taliwang'", "local chicken, toum, garlic sambal"],
-      ["325", "Pork Belly", "fried Brussels sprouts, fish sauce and lime caramel, pepper blend"],
-      ["850", "Beef Short Rib Massaman (400g)", "bone marrow, cucumber pineapple herb salsa, pomme dauphines, ST25 rice"],
-      ["950", "Thomas Angus Australian Rump Cap (250g)", "black pepper jam, fried onion rings, horseradish & dijon crema, market greens, palm sugar vinaigrette"],
-      ["375", "Lamb Gnocchi Sugo", "braised Australian lamb, basil, Manchego, nuoc mam tomato sauce"],
-      ["290", "Prawn Mafaldine", "kombu butter, roasted cherry tomatoes"],
-      ["400", "Truffle Mushroom Udon", "truffle kombu cream, bbq mushrooms, yolk jam, brown butter shokupan croutons"],
-      ["295", "Nduja XO Crab Fried Rice", "Cure & Pickle nduja, ST25 rice, fried shallots, scallions, nam jim"],
-    ],
-  },
-  {
-    title: "Sweets",
-    items: [
-      ["165", "Pandan Panna Cotta", "dragon fruit, lemongrass, black rice-sesame and coconut crunch"],
-      ["180", "Sticky Toffee Pudding", "bacon brittle, miso toffee, vanilla ice cream"],
-      ["165", "Watermelon Granita", "coconut semifreddo, candied cashews"],
-    ],
-  },
-];
-
-export const wineMenuSections = [
-  {
-    title: "By the Glass",
-    items: [
-      ["210", "Bubbles | Etichetta Nera, Valdo DOC Prosecco", "Italy, Glera NV"],
-      ["230", "Pet Nat | Pet' Au Casque, Chateau Haut-Meyreau", "Vin de France, Merlot 2023"],
-      ["210", "Rose | Gris de Grenache, Marrenon", "IGP Mediterranee, Grenache Gris 2024"],
-      ["230", "White | Tralcetto Pecorino, Cantina Zaccagnini", "Abruzzo Pecorino DOC, Pecorino 2024"],
-      ["230", "White | Furmint Dry, Grand Tokaj", "Tokaj, Furmint 2023"],
-      ["190", "White | Naturalys Chardonnay, Gerard Bertrand", "IGP Pays d'Oc, Chardonnay 2024"],
-      ["310 / 100ml", "White | Blanc de Pacs, Pares Balta", "Penedes, Parellada, Macabeu, Xarel-lo 2022"],
-      ["220", "White | Les Grains Viognier, Marrenon", "IGP Mediterranee, Viognier 2024"],
-      ["230", "Skin Contact | GeeGee, SeeSaw Orange", "Australia, Pinot Gris, Gewurtztraminer 2022"],
-      ["260", "Skin Contact | Orange Gold, Gerard Bertrand", "Vin de France, Chardonnay, Grenache Blanc, Viognier 2021"],
-      ["190", "Red | El Viejo del Valle, Boutinot", "Valle Central, Pinot Noir 2024"],
-      ["250", "Red | Corvina, Casalforte", "Veneto IGT, Corvina 2020"],
-      ["230", "Red | Al Muvedre, Telmo Rodriguez", "DO Alicante, Monastrell 2022"],
-      ["230", "Red | Fumu Vulcanica, Casa Vinicola Botter", "Terre Siciliane IGT, Cabernet Sauvignon, Merlot, Syrah 2023"],
-      ["220 / 100ml", "Sweet | Late Harvest, Royal Tokaji", "Tokaj, Harslevelu, Furmint, Yellow Muscat 2018"],
-      ["250 / 80ml", "Sweet | Para Grand Tawny 10 Year Old, Seppeltsfield", "Barossa Valley, Grenache, Shiraz, Mourvedre NV"],
-    ],
-  },
-  {
-    title: "Bubbles",
-    items: [
-      ["1,200", "Etichetta Nera, Valdo DOC Prosecco", "Italy, Glera NV"],
-      ["1,800", "Conde de Haro Brut, Muga Cava DO", "Spain, Viura, Chardonnay 2021"],
-      ["2,300", "Premium Cuvee, Jansz Tasmania", "Australia, Chardonnay, Pinot Noir NV"],
-      ["2,900", "Cuvee de Reserve Blanc de Blancs, Pierre Peters", "Champagne, Chardonnay NV"],
-      ["2,700", "Vej Brut Cuvee, Podere Pradarolo", "Emilia IGT, Malvasia di Candia Aromatica 2017-2018"],
-    ],
-  },
-  {
-    title: "White",
-    items: [
-      ["1,200", "Tralcetto Pecorino, Cantina Zaccagnini", "Abruzzo Pecorino DOC, Pecorino 2024"],
-      ["1,300", "Furmint Dry, Grand Tokaj", "Tokaj, Furmint 2023"],
-      ["1,800", "Fiano, Higher Plane", "Margaret River, Fiano 2023"],
-      ["1,900", "Wild Sauvignon, Greywacke", "Marlborough, Sauvignon Blanc 2023"],
-      ["1,600", "Hirsch, Gruner Veltliner", "Kremstal DAC, Gruner Veltliner 2023"],
-      ["1,700", "Blue Slate Kabinett, Dr. Loosen", "Mosel, Riesling 2023"],
-      ["990", "Naturalys, Gerard Bertrand", "IGP Pays d'Oc, Chardonnay 2024"],
-      ["1,800", "Blanc de Pacs, Pares Balta", "Penedes DO, Parellada, Macabeu, Xarel-lo 2022"],
-      ["2,300", "Cinque Terre, Terenzuola", "Cinque Terre DOC, Bosco, Vermentino 2023"],
-      ["3,100", "Clos des Vignes du Maynes", "Macon-Cruzille, Chardonnay 2022"],
-    ],
-  },
-  {
-    title: "Skin Contact",
-    items: [
-      ["1,300", "GeeGee, SeeSaw Orange", "Australia, Pinot Gris, Gewurtztraminer 2022"],
-      ["1,800", "Esoterico, Unico Zelo", "Riverland, Zibibbo, Gewurztraminer, Moscato Giallo, Greco, Fiano 2022"],
-      ["1,600", "Orange Gold, Gerard Bertrand", "Vin de France, Chardonnay, Grenache Blanc, Viognier 2021"],
-      ["1,700", "No Es Pituko Orange, Vina Echeverria", "Curico Valley, Sauvignon Blanc 2024"],
-    ],
-  },
-  {
-    title: "Red",
-    items: [
-      ["990", "El Viejo del Valle, Boutinot", "Valle Central, Pinot Noir 2024"],
-      ["1,900", "Bourgogne Gamay, Nicolas Potel", "Bourgogne, Gamay 2023"],
-      ["1,500", "Seriously Cool Cinsault, Waterkloof", "WO Stellenbosch, Cinsault 2023"],
-      ["2,300", "Trousseau, Domaine Rolet", "Arbois AOC, Trousseau 2023"],
-      ["1,400", "Tinto Maceracion Carbonica, Luis Canas", "Rioja DOCa, Tempranillo, Viura 2023"],
-      ["1,700", "Dolcetto d'Alba, Sandrone", "Dolcetto d'Alba DOC 2023"],
-      ["1,200", "Al Muvedre, Telmo Rodriguez", "DO Alicante, Monastrell 2022"],
-      ["1,600", "El Picaro, Matsu", "DO Toro, Tinta de Toro 2023"],
-      ["2,100", "Etna Rosso, Tenuta delle Terre Nere", "Etna Rosso DOC, Nerello Mascalese, Nerello Cappuccio 2024"],
-      ["2,600", "Taraboste Saperavi", "Moldova, Saperavi 2017"],
-    ],
-  },
-  {
-    title: "Sweet",
-    items: [
-      ["1,300", "Late Harvest, Royal Tokaji", "Tokaj, Harslevelu, Furmint, Yellow Muscat 2019"],
-      ["1,600", "Para Grand Tawny 10 Year Old, Seppeltsfield", "Barossa Valley, Grenache, Shiraz, Mourvedre NV"],
-    ],
   },
 ];

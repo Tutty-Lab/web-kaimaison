@@ -4,7 +4,9 @@ import sharp from "sharp";
 
 const projectRoot = process.cwd();
 const sourceDir = path.join(projectRoot, "assets", "website Kai maison");
+const crawlSourceDir = path.join(projectRoot, "assets", "kaimaison.de-images", "images");
 const outputDir = path.join(projectRoot, "public", "generated");
+const kaiOutputDir = path.join(outputDir, "kai");
 
 const assetMap = [
   ["R1-08607-0005(1).TIF", "neon-window"],
@@ -28,7 +30,19 @@ const assetMap = [
   ["R1-08609-0024.TIF", "canal-trees"],
 ];
 
+const crawledAssetMap = [
+  ["001-contact.jpg", "contact-hall"],
+  ["002-bo.jpg", "dish-beef"],
+  ["003-ca.jpg", "dish-fish"],
+  ["004-vit.jpg", "dish-duck"],
+  ["006-home-bar.jpg", "home-bar"],
+  ["007-kai-maison-home-998x1500.webp", "illustration-home"],
+  ["008-kai-maison-menu.webp", "menu-table"],
+  ["009-kai-maison-wein.webp", "drink-guest"],
+];
+
 await fs.mkdir(outputDir, { recursive: true });
+await fs.mkdir(kaiOutputDir, { recursive: true });
 
 async function pathExists(filePath) {
   try {
@@ -42,7 +56,8 @@ async function pathExists(filePath) {
 async function generatedAssetsComplete() {
   const required = [
     ...assetMap.flatMap(([, outputName]) => [`${outputName}.webp`, `${outputName}.jpg`]),
-    "kaimaison-logo.svg",
+    ...crawledAssetMap.flatMap(([, outputName]) => [`kai/${outputName}.webp`, `kai/${outputName}.jpg`]),
+    "kai-maison-logo.svg",
     "menu-food.pdf",
     "menu-drinks.pdf",
   ];
@@ -56,11 +71,20 @@ async function generatedAssetsComplete() {
 
 if (!(await pathExists(sourceDir))) {
   if (await generatedAssetsComplete()) {
-    console.log("Source TIF assets not present; using committed optimized assets.");
+    console.log("Source assets not present; using committed optimized assets.");
     process.exit(0);
   }
 
   throw new Error(`Missing source assets and generated fallback: ${sourceDir}`);
+}
+
+if (!(await pathExists(crawlSourceDir))) {
+  if (await generatedAssetsComplete()) {
+    console.log("Crawled Kai Maison assets not present; using committed optimized assets.");
+    process.exit(0);
+  }
+
+  throw new Error(`Missing crawled source assets and generated fallback: ${crawlSourceDir}`);
 }
 
 const sourceFiles = await fs.readdir(sourceDir);
@@ -85,9 +109,24 @@ for (const [sourceName, outputName] of assetMap) {
     .toFile(path.join(outputDir, `${outputName}.jpg`));
 }
 
+for (const [sourceName, outputName] of crawledAssetMap) {
+  const inputPath = path.join(crawlSourceDir, sourceName);
+  await sharp(inputPath)
+    .rotate()
+    .resize({ width: 1800, withoutEnlargement: true })
+    .webp({ quality: 82 })
+    .toFile(path.join(kaiOutputDir, `${outputName}.webp`));
+
+  await sharp(inputPath)
+    .rotate()
+    .resize({ width: 900, withoutEnlargement: true })
+    .jpeg({ quality: 78, mozjpeg: true })
+    .toFile(path.join(kaiOutputDir, `${outputName}.jpg`));
+}
+
 await fs.copyFile(
   path.join(sourceDir, "LOGOKAIMAISON_tableetbar.svg"),
-  path.join(outputDir, "kaimaison-logo.svg"),
+  path.join(outputDir, "kai-maison-logo.svg"),
 );
 
 await fs.copyFile(
@@ -100,4 +139,6 @@ await fs.copyFile(
   path.join(outputDir, "menu-drinks.pdf"),
 );
 
-console.log(`Generated ${assetMap.length * 2} responsive images, logo, and menu PDFs in ${outputDir}`);
+console.log(
+  `Generated ${(assetMap.length + crawledAssetMap.length) * 2} responsive images, logo, and menu PDFs in ${outputDir}`,
+);
