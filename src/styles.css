@@ -681,7 +681,7 @@ body.has-scrolled .site-header {
   padding: 2.8rem 0 2rem;
 }
 
-.summary-section + .summary-section {
+.summary-section+.summary-section {
   padding-top: 1.45rem;
 }
 
@@ -2435,7 +2435,7 @@ body.has-scrolled .site-header {
 
   .summary-card p,
   .summary-card time {
-    font-size: 0.64rem;
+    font-size: 0.72rem;
     line-height: 1.42;
   }
 
