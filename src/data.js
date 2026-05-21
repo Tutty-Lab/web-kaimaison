@@ -1,5 +1,6 @@
 const generated = (name) => `${import.meta.env.BASE_URL}generated/${name}`;
 const kai = (name) => generated(`kai/${name}`);
+const bird = (name) => generated(`bird/${name}`);
 
 export const images = {
   logo: generated("kai-maison-logo.svg"),
@@ -38,6 +39,13 @@ export const images = {
   dishFish: kai("dish-fish.webp"),
   dishDuck: kai("dish-duck.webp"),
 };
+
+export const birdIcons = [
+  bird("blue.png"),
+  bird("green.png"),
+  bird("black.png"),
+  bird("red.png"),
+];
 
 export const photoStrips = {
   about: [

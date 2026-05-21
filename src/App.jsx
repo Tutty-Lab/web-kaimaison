@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { eventItems, images, menuDocuments, navItems, photoStrips, pressItems, site } from "./data.js";
+import { birdIcons, eventItems, images, menuDocuments, navItems, photoStrips, pressItems, site } from "./data.js";
 import { useOjigiMotion } from "./motion.js";
 
 const appBase = import.meta.env.BASE_URL || "/";
@@ -31,8 +31,124 @@ function findPostByPath(path) {
   return [...pressItems, ...eventItems].find((item) => normalizePath(item.href) === clean) || null;
 }
 
+function collectImageUrls(value, urls = new Set()) {
+  if (!value) return urls;
+
+  if (typeof value === "string") {
+    if (/\.(avif|gif|jpe?g|png|svg|webp)([?#].*)?$/i.test(value)) {
+      urls.add(value);
+    }
+
+    return urls;
+  }
+
+  if (Array.isArray(value)) {
+    value.forEach((item) => collectImageUrls(item, urls));
+    return urls;
+  }
+
+  if (typeof value === "object") {
+    Object.values(value).forEach((item) => collectImageUrls(item, urls));
+  }
+
+  return urls;
+}
+
+const preloadImageUrls = Array.from(collectImageUrls([images, birdIcons, photoStrips, pressItems, eventItems]));
+
+function preloadImage(src, onSettled) {
+  return new Promise((resolve) => {
+    const image = new Image();
+    let settled = false;
+
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      window.clearTimeout(timeout);
+      onSettled();
+      resolve(src);
+    };
+    const timeout = window.setTimeout(finish, 12000);
+
+    image.onload = () => {
+      if (image.decode) {
+        image.decode().catch(() => {}).finally(finish);
+        return;
+      }
+
+      finish();
+    };
+    image.onerror = finish;
+    image.src = src;
+  });
+}
+
+function waitForPageImages() {
+  return Promise.all(
+    Array.from(document.images).map((image) => {
+      if (image.complete) return Promise.resolve();
+
+      return new Promise((resolve) => {
+        const finish = () => {
+          window.clearTimeout(timeout);
+          image.removeEventListener("load", finish);
+          image.removeEventListener("error", finish);
+          resolve();
+        };
+        const timeout = window.setTimeout(finish, 8000);
+        image.addEventListener("load", finish, { once: true });
+        image.addEventListener("error", finish, { once: true });
+      });
+    }),
+  );
+}
+
+function useAssetPreloader(urls) {
+  const [progress, setProgress] = useState(0);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    let loaded = 0;
+    const total = urls.length;
+
+    if (!total) {
+      setProgress(100);
+      setReady(true);
+      return undefined;
+    }
+
+    const handleSettled = () => {
+      loaded += 1;
+      if (!cancelled) {
+        setProgress(Math.round((loaded / total) * 100));
+      }
+    };
+
+    const imagesReady = Promise.all(urls.map((url) => preloadImage(url, handleSettled)));
+    const fontsReady = document.fonts?.ready?.catch(() => undefined) || Promise.resolve();
+    const minDisplay = new Promise((resolve) => window.setTimeout(resolve, 780));
+
+    Promise.all([imagesReady, fontsReady, minDisplay])
+      .then(() => waitForPageImages())
+      .then(() => {
+        if (!cancelled) {
+          setProgress(100);
+          setReady(true);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [urls]);
+
+  return { progress, ready };
+}
+
 function App() {
   const [path, setPath] = useState(() => normalizePath(window.location.pathname));
+  const { progress: assetsProgress, ready: assetsReady } = useAssetPreloader(preloadImageUrls);
 
   useEffect(() => {
     const onPopState = () => setPath(normalizePath(window.location.pathname));
@@ -43,6 +159,11 @@ function App() {
   useEffect(() => {
     document.title = site.title;
   }, []);
+
+  useEffect(() => {
+    document.body.classList.toggle("loading-active", !assetsReady);
+    return () => document.body.classList.remove("loading-active");
+  }, [assetsReady]);
 
   useOjigiMotion(path);
 
@@ -84,10 +205,44 @@ function App() {
 
   return (
     <>
-      <Header currentPath={path} onNavigate={navigate} />
-      <main>{page}</main>
-      <Footer />
+      <LoadingOverlay progress={assetsProgress} ready={assetsReady} />
+      <div className={`app-shell${assetsReady ? " is-ready" : ""}`} aria-hidden={assetsReady ? undefined : "true"}>
+        <Header currentPath={path} onNavigate={navigate} />
+        <main>{page}</main>
+        <Footer />
+      </div>
     </>
+  );
+}
+
+function LoadingOverlay({ progress, ready }) {
+  const percent = Math.min(100, Math.max(0, progress));
+
+  return (
+    <div
+      className={`loading-overlay${ready ? " is-hidden" : ""}`}
+      role="status"
+      aria-busy={ready ? "false" : "true"}
+      aria-hidden={ready ? "true" : undefined}
+      aria-live="polite"
+      style={{ "--load-progress": `${percent / 100}` }}
+    >
+      <div className="loader-panel">
+        <img className="loader-logo" src={images.logo} alt="" />
+        <span className="loader-note">Preparing your table</span>
+        <div
+          className="loader-progress-bar"
+          role="progressbar"
+          aria-label="Loading progress"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow={percent}
+        >
+          <span />
+        </div>
+      </div>
+      <span className="loader-status">Loading Kai Maison</span>
+    </div>
   );
 }
 
@@ -166,7 +321,18 @@ function Header({ currentPath, onNavigate }) {
 }
 
 function SmartImage({ src, alt = "", className = "", loading = "eager", ...props }) {
-  return <img className={className} src={src} alt={alt} loading={loading} decoding="async" {...props} />;
+  const fetchPriority = loading === "eager" ? "high" : "auto";
+  return (
+    <img
+      className={className}
+      src={src}
+      alt={alt}
+      loading="eager"
+      decoding="async"
+      fetchPriority={fetchPriority}
+      {...props}
+    />
+  );
 }
 
 function formatDate(date) {
@@ -887,7 +1053,7 @@ function GiftCardsPage() {
             Please contact us via the form or at <a href={`mailto:${site.email}`}>{site.email}</a> for more details.
           </p>
         </div>
-        <ContactForm />
+        <GiftCardForm />
       </section>
       <PhotoStrip items={photoStrips.form} />
     </>
@@ -914,12 +1080,7 @@ function ContactPage() {
           </p>
           <SocialLinks />
         </div>
-        <div className="contact-form-stack">
-          <ContactForm />
-          <a className="outline-button reservation-button" href={site.reservation} target="_blank" rel="noreferrer">
-            Make a Reservation
-          </a>
-        </div>
+        <GiftCardForm />
       </section>
       <PhotoStrip items={photoStrips.contact} />
     </>
@@ -1050,9 +1211,14 @@ function Footer() {
           <div className="marquee-group">{renderMarqueeGroup("b")}</div>
         </div>
       </div>
+      <div className="footer-birds" aria-hidden="true">
+        {birdIcons.map((src, index) => (
+          <img src={src} alt="" key={src} className={`footer-bird footer-bird-${index + 1}`} />
+        ))}
+      </div>
       <div className="footer-inner">
         <div className="footer-logo" data-motion="fade-up">
-          <img src={images.logo} alt="Kai Maison" loading="lazy" />
+          <SmartImage src={images.logo} alt="Kai Maison" />
         </div>
         <div className="footer-address" data-motion="fade-up" data-motion-delay="90">
           <p>{site.addressShort}</p>
@@ -1064,7 +1230,13 @@ function Footer() {
         </div>
         <div className="footer-meta" data-motion="fade-up" data-motion-delay="270">
           <p>© 2026 Kai Maison. All Rights Reserved.</p>
-          <p>Coded by TUTTYLAB.</p>
+          <p>
+            Coded by{" "}
+            <a href="http://tutty-lab.com/" target="_blank" rel="noreferrer">
+              TUTTYLAB
+            </a>
+            .
+          </p>
         </div>
         <div data-motion="fade-up" data-motion-delay="340">
           <SocialLinks />

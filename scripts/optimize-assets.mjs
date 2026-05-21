@@ -5,8 +5,10 @@ import sharp from "sharp";
 const projectRoot = process.cwd();
 const sourceDir = path.join(projectRoot, "assets", "website Kai maison");
 const crawlSourceDir = path.join(projectRoot, "assets", "kaimaison.de-images", "images");
+const birdSourceDir = path.join(projectRoot, "assets", "bird");
 const outputDir = path.join(projectRoot, "public", "generated");
 const kaiOutputDir = path.join(outputDir, "kai");
+const birdOutputDir = path.join(outputDir, "bird");
 
 const assetMap = [
   ["R1-08607-0005(1).TIF", "neon-window"],
@@ -41,8 +43,16 @@ const crawledAssetMap = [
   ["009-kai-maison-wein.webp", "drink-guest"],
 ];
 
+const birdAssetMap = [
+  ["Xanh dương.png", "blue.png"],
+  ["Xanh lá.png", "green.png"],
+  ["Đen.png", "black.png"],
+  ["Đỏ.png", "red.png"],
+];
+
 await fs.mkdir(outputDir, { recursive: true });
 await fs.mkdir(kaiOutputDir, { recursive: true });
+await fs.mkdir(birdOutputDir, { recursive: true });
 
 async function pathExists(filePath) {
   try {
@@ -57,6 +67,7 @@ async function generatedAssetsComplete() {
   const required = [
     ...assetMap.flatMap(([, outputName]) => [`${outputName}.webp`, `${outputName}.jpg`]),
     ...crawledAssetMap.flatMap(([, outputName]) => [`kai/${outputName}.webp`, `kai/${outputName}.jpg`]),
+    ...birdAssetMap.map(([, outputName]) => `bird/${outputName}`),
     "kai-maison-logo.svg",
     "menu-food.pdf",
     "menu-drinks.pdf",
@@ -85,6 +96,15 @@ if (!(await pathExists(crawlSourceDir))) {
   }
 
   throw new Error(`Missing crawled source assets and generated fallback: ${crawlSourceDir}`);
+}
+
+if (!(await pathExists(birdSourceDir))) {
+  if (await generatedAssetsComplete()) {
+    console.log("Bird assets not present; using committed optimized assets.");
+    process.exit(0);
+  }
+
+  throw new Error(`Missing bird source assets and generated fallback: ${birdSourceDir}`);
 }
 
 const sourceFiles = await fs.readdir(sourceDir);
@@ -122,6 +142,13 @@ for (const [sourceName, outputName] of crawledAssetMap) {
     .resize({ width: 900, withoutEnlargement: true })
     .jpeg({ quality: 78, mozjpeg: true })
     .toFile(path.join(kaiOutputDir, `${outputName}.jpg`));
+}
+
+for (const [sourceName, outputName] of birdAssetMap) {
+  await fs.copyFile(
+    path.join(birdSourceDir, sourceName),
+    path.join(birdOutputDir, outputName),
+  );
 }
 
 await fs.copyFile(
