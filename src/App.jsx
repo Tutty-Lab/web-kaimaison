@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { birdIcons, eventItems, images, menuDocuments, navItems, photoStrips, pressItems, site } from "./data.js";
 import { useOjigiMotion } from "./motion.js";
 
@@ -578,9 +578,6 @@ function SocialLinks() {
 function SummaryCarousel({ title, items, showDates = true }) {
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(getSummaryPageSize);
-  const [transition, setTransition] = useState({ previous: null, direction: "next", active: false });
-  const [hasNavigated, setHasNavigated] = useState(false);
-  const transitionTimer = useRef(null);
   const count = items.length;
   const pages = useMemo(() => {
     const chunks = [];
@@ -595,7 +592,6 @@ function SummaryCarousel({ title, items, showDates = true }) {
   const maxPage = Math.max(0, pages.length - 1);
   const isFirstPage = pageIndex === 0;
   const isLastPage = pageIndex === maxPage;
-  const isMoving = transition.active;
 
   useEffect(() => {
     const onResize = () => setPageSize(getSummaryPageSize());
@@ -604,28 +600,16 @@ function SummaryCarousel({ title, items, showDates = true }) {
   }, []);
 
   useEffect(() => {
-    return () => window.clearTimeout(transitionTimer.current);
-  }, []);
-
-  useEffect(() => {
     setPageIndex((page) => Math.min(page, maxPage));
-    setTransition({ previous: null, direction: "next", active: false });
   }, [maxPage]);
 
-  const navigatePage = (nextPage, direction) => {
-    if (nextPage === pageIndex || isMoving) return;
-
-    window.clearTimeout(transitionTimer.current);
-    setHasNavigated(true);
-    setTransition({ previous: pageIndex, direction, active: true });
+  const navigatePage = (nextPage) => {
+    if (nextPage === pageIndex) return;
     setPageIndex(nextPage);
-    transitionTimer.current = window.setTimeout(() => {
-      setTransition({ previous: null, direction, active: false });
-    }, 820);
   };
 
-  const prev = () => navigatePage(Math.max(0, pageIndex - 1), "prev");
-  const next = () => navigatePage(Math.min(maxPage, pageIndex + 1), "next");
+  const prev = () => navigatePage(Math.max(0, pageIndex - 1));
+  const next = () => navigatePage(Math.min(maxPage, pageIndex + 1));
 
   return (
     <section className="summary-section">
@@ -637,7 +621,7 @@ function SummaryCarousel({ title, items, showDates = true }) {
             type="button"
             onClick={prev}
             aria-label={`Previous ${title}`}
-            disabled={isFirstPage || isMoving}
+            disabled={isFirstPage}
           >
             <span aria-hidden="true" />
           </button>
@@ -646,20 +630,13 @@ function SummaryCarousel({ title, items, showDates = true }) {
             type="button"
             onClick={next}
             aria-label={`Next ${title}`}
-            disabled={isLastPage || isMoving}
+            disabled={isLastPage}
           >
             <span aria-hidden="true" />
           </button>
         </div>
       </div>
-      <div
-        className={`summary-viewport${hasNavigated ? " has-navigated" : ""}${
-          isMoving ? ` is-moving is-moving-${transition.direction}` : ""
-        }`}
-        aria-live="polite"
-        data-motion="fade-up"
-        data-motion-delay="180"
-      >
+      <div className="summary-viewport" aria-live="polite" data-motion="fade-up" data-motion-delay="180">
         <div
           className="summary-track"
           style={{ "--carousel-page": pageIndex, "--summary-page-size": pageSize }}
@@ -667,9 +644,7 @@ function SummaryCarousel({ title, items, showDates = true }) {
           {pages.map((page, pageSlot) => (
             <div
               key={`${title}-${pageSlot}`}
-              className={`summary-page${pageSlot === pageIndex ? " is-active" : ""}${
-                transition.previous === pageSlot ? ` is-leaving is-leaving-${transition.direction}` : ""
-              }`}
+              className={`summary-page${pageSlot === pageIndex ? " is-active" : ""}`}
               aria-hidden={pageSlot !== pageIndex}
             >
               {page.map((item, slot) => (
