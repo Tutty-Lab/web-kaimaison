@@ -921,6 +921,18 @@ body.has-scrolled .site-header {
   animation-duration: 760ms;
 }
 
+.summary-viewport.has-navigated:not(.is-moving) .summary-page.is-active .summary-card {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+
+.summary-viewport.has-navigated:not(.is-moving) .summary-page.is-active .summary-card-img img {
+  animation: none;
+  clip-path: inset(0 0 0 0);
+  opacity: 1;
+}
+
 .summary-card:hover .summary-card-img img {
   transform: scale(1.03);
 }
@@ -2396,18 +2408,6 @@ body.has-scrolled .site-header {
 
   .summary-page {
     gap: 2rem 0.75rem;
-  }
-
-  .summary-viewport:not(.is-moving) .summary-page.is-active .summary-card {
-    animation: none;
-    opacity: 1;
-    transform: none;
-  }
-
-  .summary-viewport:not(.is-moving) .summary-page.is-active .summary-card-img img {
-    animation: none;
-    clip-path: inset(0 0 0 0);
-    opacity: 1;
   }
 
   .summary-heading h2 {

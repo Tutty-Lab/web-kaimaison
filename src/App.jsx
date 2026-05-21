@@ -579,6 +579,7 @@ function SummaryCarousel({ title, items, showDates = true }) {
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(getSummaryPageSize);
   const [transition, setTransition] = useState({ previous: null, direction: "next", active: false });
+  const [hasNavigated, setHasNavigated] = useState(false);
   const transitionTimer = useRef(null);
   const count = items.length;
   const pages = useMemo(() => {
@@ -615,6 +616,7 @@ function SummaryCarousel({ title, items, showDates = true }) {
     if (nextPage === pageIndex || isMoving) return;
 
     window.clearTimeout(transitionTimer.current);
+    setHasNavigated(true);
     setTransition({ previous: pageIndex, direction, active: true });
     setPageIndex(nextPage);
     transitionTimer.current = window.setTimeout(() => {
@@ -651,7 +653,9 @@ function SummaryCarousel({ title, items, showDates = true }) {
         </div>
       </div>
       <div
-        className={`summary-viewport${isMoving ? ` is-moving is-moving-${transition.direction}` : ""}`}
+        className={`summary-viewport${hasNavigated ? " has-navigated" : ""}${
+          isMoving ? ` is-moving is-moving-${transition.direction}` : ""
+        }`}
         aria-live="polite"
         data-motion="fade-up"
         data-motion-delay="180"
