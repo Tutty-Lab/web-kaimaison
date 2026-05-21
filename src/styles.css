@@ -338,6 +338,7 @@ body.has-scrolled .site-header {
   color: var(--ink);
   font-family: var(--body);
   font-size: 1.02rem;
+  font-weight: 700;
   line-height: 1.45;
   min-height: 1.45em;
   text-transform: uppercase;
@@ -423,35 +424,7 @@ body.has-scrolled .site-header {
   pointer-events: none;
 }
 
-.hero-logo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: 0;
-  color: rgba(17, 13, 0, 0.72);
-  font-family: var(--display);
-  font-size: clamp(3.9rem, 8.4vw, 7.2rem);
-  font-weight: 800;
-  line-height: 0.72;
-  text-align: center;
-  text-transform: lowercase;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-}
-
-.hero-logo span {
-  display: block;
-}
-
-.hero-logo[data-motion="fade-up"] {
-  transform: translate(-50%, calc(-50% + 36px));
-}
-
-.hero-logo[data-motion="fade-up"].is-visible {
-  transform: translate(-50%, -50%);
-}
-
-.elgin-stamp {
+.kai-stamp {
   position: absolute;
   right: clamp(2.4rem, 5vw, 5.5rem);
   bottom: clamp(2.2rem, 4.5vw, 4.8rem);
@@ -465,17 +438,17 @@ body.has-scrolled .site-header {
   z-index: 2;
 }
 
-.elgin-stamp-ring,
-.elgin-stamp-core {
+.kai-stamp-ring,
+.kai-stamp-core {
   position: absolute;
   inset: 0;
 }
 
-.elgin-stamp-ring {
+.kai-stamp-ring {
   animation: stampRotate 15s linear infinite;
 }
 
-.elgin-stamp-char {
+.kai-stamp-char {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -489,7 +462,7 @@ body.has-scrolled .site-header {
   transform-origin: center;
 }
 
-.elgin-stamp-core {
+.kai-stamp-core {
   display: grid;
   place-items: center;
   margin: 29%;
@@ -1750,7 +1723,7 @@ body.has-scrolled .site-header {
   z-index: 2;
 }
 
-.elgin-form {
+.kai-form {
   display: grid;
   gap: 1rem;
   width: 100%;
@@ -1779,12 +1752,12 @@ body.has-scrolled .site-header {
   gap: 0.6rem;
 }
 
-.elgin-form label {
+.kai-form label {
   display: grid;
   gap: 0.42rem;
 }
 
-.elgin-form span,
+.kai-form span,
 .name-fieldset legend {
   color: var(--ink);
   font-size: inherit;
@@ -1792,16 +1765,16 @@ body.has-scrolled .site-header {
   line-height: 1.35;
 }
 
-.elgin-form .field-required {
+.kai-form .field-required {
   color: #777;
   font-family: var(--body);
   font-size: 0.92em;
   font-weight: 400;
 }
 
-.elgin-form input,
-.elgin-form select,
-.elgin-form textarea {
+.kai-form input,
+.kai-form select,
+.kai-form textarea {
   width: 100%;
   border: 1px solid var(--ink);
   border-radius: 5px;
@@ -1812,20 +1785,20 @@ body.has-scrolled .site-header {
   font: inherit;
 }
 
-.elgin-form textarea {
+.kai-form textarea {
   min-height: 96px;
   resize: vertical;
 }
 
-.elgin-form select {
+.kai-form select {
   appearance: auto;
 }
 
-.elgin-form .short-field {
+.kai-form .short-field {
   width: min(200px, 100%);
 }
 
-.elgin-form .outline-button {
+.kai-form .outline-button {
   min-height: 44px;
   min-width: 92px;
   padding: 0.7rem 1rem;
@@ -2307,13 +2280,7 @@ body.has-scrolled .site-header {
     object-position: center top;
   }
 
-  .hero-logo {
-    top: 48%;
-    color: rgba(17, 13, 0, 0.56);
-    font-size: clamp(2.05rem, 9.6vw, 3rem);
-  }
-
-  .elgin-stamp {
+  .kai-stamp {
     display: none;
   }
 
@@ -2429,6 +2396,18 @@ body.has-scrolled .site-header {
 
   .summary-page {
     gap: 2rem 0.75rem;
+  }
+
+  .summary-viewport:not(.is-moving) .summary-page.is-active .summary-card {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .summary-viewport:not(.is-moving) .summary-page.is-active .summary-card-img img {
+    animation: none;
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
   }
 
   .summary-heading h2 {
@@ -2790,7 +2769,7 @@ body.has-scrolled .site-header {
     grid-template-columns: minmax(0, 1fr) auto;
   }
 
-  .elgin-form .short-field {
+  .kai-form .short-field {
     width: 100%;
   }
 }
@@ -2823,7 +2802,7 @@ body.has-scrolled .site-header {
   }
 
   [data-motion="menu-item"],
-  .elgin-stamp-ring,
+  .kai-stamp-ring,
   .loader-panel {
     animation: none !important;
   }
@@ -2832,7 +2811,4 @@ body.has-scrolled .site-header {
     animation: marquee 48s linear infinite !important;
   }
 
-  .hero-logo[data-motion="fade-up"] {
-    transform: translate(-50%, -50%) !important;
-  }
 }

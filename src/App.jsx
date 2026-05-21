@@ -367,13 +367,13 @@ function MotionHeading({ as: Tag = "h2", children, delay = 0, className = "" }) 
   );
 }
 
-function ElginStamp({ className = "" }) {
+function KaiStamp({ className = "" }) {
   const stampText = "RESERVE YOUR TABLE + RESERVE YOUR TABLE +";
   const chars = stampText.split("");
 
   return (
     <a
-      className={`elgin-stamp ${className}`}
+      className={`kai-stamp ${className}`}
       href={site.reservation}
       target="_blank"
       rel="noreferrer"
@@ -381,10 +381,10 @@ function ElginStamp({ className = "" }) {
       data-motion="stamp"
       data-motion-delay="360"
     >
-      <span className="elgin-stamp-ring" aria-hidden="true">
+      <span className="kai-stamp-ring" aria-hidden="true">
         {chars.map((char, index) => (
           <span
-            className="elgin-stamp-char"
+            className="kai-stamp-char"
             key={`${char}-${index}`}
             style={{ "--char-angle": `${(360 / chars.length) * index}deg` }}
           >
@@ -392,7 +392,7 @@ function ElginStamp({ className = "" }) {
           </span>
         ))}
       </span>
-      <span className="elgin-stamp-core" aria-hidden="true">Kai</span>
+      <span className="kai-stamp-core" aria-hidden="true">Kai</span>
     </a>
   );
 }
@@ -439,11 +439,7 @@ function HomePage({ onNavigate }) {
     <>
       <section className="hero" aria-label="Kai Maison">
         <SmartImage src={images.hero} alt="" loading="eager" data-motion="image-clip" data-parallax="18" />
-        <h1 className="hero-logo" data-motion="fade-up" data-motion-delay="260">
-          <span>kai</span>
-          <span>maison</span>
-        </h1>
-        <ElginStamp className="hero-stamp" />
+        <KaiStamp className="hero-stamp" />
       </section>
 
       <HomeMosaic onNavigate={onNavigate} />
@@ -1132,7 +1128,7 @@ function MessageField({ label = "Message", required = false }) {
 
 function FormShell({ children }) {
   return (
-    <form className="elgin-form" data-motion="fade-up" data-motion-delay="160" onSubmit={(event) => event.preventDefault()}>
+    <form className="kai-form" data-motion="fade-up" data-motion-delay="160" onSubmit={(event) => event.preventDefault()}>
       {children}
       <button className="outline-button" type="submit">
         Send
