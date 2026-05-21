@@ -5,6 +5,7 @@ import sharp from "sharp";
 const projectRoot = process.cwd();
 const sourceDir = path.join(projectRoot, "assets", "website Kai maison");
 const crawlSourceDir = path.join(projectRoot, "assets", "kaimaison.de-images", "images");
+const kaiSourceDir = path.join(projectRoot, "assets", "kai");
 const birdSourceDir = path.join(projectRoot, "assets", "bird");
 const outputDir = path.join(projectRoot, "public", "generated");
 const kaiOutputDir = path.join(outputDir, "kai");
@@ -43,6 +44,13 @@ const crawledAssetMap = [
   ["009-kai-maison-wein.webp", "drink-guest"],
 ];
 
+const kaiStripAssetMap = [
+  ["1.jpg", "strip-food-service"],
+  ["2.jpg", "strip-plated-bite"],
+  ["3.jpg", "strip-cocktail"],
+  ["4.jpg", "strip-dining-service"],
+];
+
 const birdAssetMap = [
   ["Xanh dương.png", "blue.png"],
   ["Xanh lá.png", "green.png"],
@@ -67,6 +75,7 @@ async function generatedAssetsComplete() {
   const required = [
     ...assetMap.flatMap(([, outputName]) => [`${outputName}.webp`, `${outputName}.jpg`]),
     ...crawledAssetMap.flatMap(([, outputName]) => [`kai/${outputName}.webp`, `kai/${outputName}.jpg`]),
+    ...kaiStripAssetMap.flatMap(([, outputName]) => [`kai/${outputName}.webp`, `kai/${outputName}.jpg`]),
     ...birdAssetMap.map(([, outputName]) => `bird/${outputName}`),
     "kai-maison-logo.svg",
     "menu-food.pdf",
@@ -96,6 +105,15 @@ if (!(await pathExists(crawlSourceDir))) {
   }
 
   throw new Error(`Missing crawled source assets and generated fallback: ${crawlSourceDir}`);
+}
+
+if (!(await pathExists(kaiSourceDir))) {
+  if (await generatedAssetsComplete()) {
+    console.log("Kai strip assets not present; using committed optimized assets.");
+    process.exit(0);
+  }
+
+  throw new Error(`Missing Kai strip source assets and generated fallback: ${kaiSourceDir}`);
 }
 
 if (!(await pathExists(birdSourceDir))) {
@@ -144,6 +162,21 @@ for (const [sourceName, outputName] of crawledAssetMap) {
     .toFile(path.join(kaiOutputDir, `${outputName}.jpg`));
 }
 
+for (const [sourceName, outputName] of kaiStripAssetMap) {
+  const inputPath = path.join(kaiSourceDir, sourceName);
+  await sharp(inputPath)
+    .rotate()
+    .resize({ width: 1800, withoutEnlargement: true })
+    .webp({ quality: 82 })
+    .toFile(path.join(kaiOutputDir, `${outputName}.webp`));
+
+  await sharp(inputPath)
+    .rotate()
+    .resize({ width: 900, withoutEnlargement: true })
+    .jpeg({ quality: 78, mozjpeg: true })
+    .toFile(path.join(kaiOutputDir, `${outputName}.jpg`));
+}
+
 for (const [sourceName, outputName] of birdAssetMap) {
   await fs.copyFile(
     path.join(birdSourceDir, sourceName),
@@ -167,5 +200,5 @@ await fs.copyFile(
 );
 
 console.log(
-  `Generated ${(assetMap.length + crawledAssetMap.length) * 2} responsive images, logo, and menu PDFs in ${outputDir}`,
+  `Generated ${(assetMap.length + crawledAssetMap.length + kaiStripAssetMap.length) * 2} responsive images, logo, and menu PDFs in ${outputDir}`,
 );

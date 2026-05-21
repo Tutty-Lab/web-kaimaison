@@ -1160,14 +1160,14 @@ function GiftCardForm() {
       <TextField label="Your Email" required type="email" />
       <TextField label="Recipient Name" required />
       <label>
-        <span>Gift Card Amount (VND) <RequiredMark /></span>
+        <span>Gift Card Amount (€) <RequiredMark /></span>
         <select defaultValue="">
           <option value="" disabled>
             Select an amount
           </option>
-          <option>1,000,000 VND</option>
-          <option>1,500,000 VND</option>
-          <option>2,000,000 VND</option>
+          <option>€50</option>
+          <option>€75</option>
+          <option>€100</option>
           <option>Other</option>
         </select>
       </label>
@@ -1230,10 +1230,16 @@ function Footer() {
         </div>
         <div className="footer-meta" data-motion="fade-up" data-motion-delay="270">
           <p>© 2026 Kai Maison. All Rights Reserved.</p>
-          <p>
+          <p className="footer-credit">
             Coded by{" "}
-            <a href="http://tutty-lab.com/" target="_blank" rel="noreferrer">
-              TUTTYLAB
+            <a
+              className="tuttylab-link"
+              href="http://tutty-lab.com/"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Coded by TUTTYLAB"
+            >
+              <img className="tuttylab-logo" src={`${import.meta.env.BASE_URL}logo.svg`} alt="TUTTYLAB" />
             </a>
             .
           </p>

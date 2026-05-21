@@ -1,4 +1,5 @@
 const generated = (name) => `${import.meta.env.BASE_URL}generated/${name}`;
+const publicAsset = (name) => `${import.meta.env.BASE_URL}${name}`;
 const kai = (name) => generated(`kai/${name}`);
 const bird = (name) => generated(`bird/${name}`);
 
@@ -7,12 +8,12 @@ export const images = {
   hero: kai("home-bar.webp"),
   aboutHero: kai("contact-hall.webp"),
   aboutMenu: generated("dining-room.webp"),
-  teamMimi: kai("drink-guest.webp"),
+  teamMimi: publicAsset("wine.jpg"),
   teamDoug: generated("carved-chair.webp"),
   teamDipti: generated("prep-counter.webp"),
   chef: generated("bar-tables.webp"),
   menuHand: kai("menu-table.webp"),
-  wine: kai("drink-guest.webp"),
+  wine: publicAsset("wine.jpg"),
   dessert: kai("dish-fish.webp"),
   grill: kai("dish-beef.webp"),
   coasters: kai("dish-duck.webp"),
@@ -38,6 +39,10 @@ export const images = {
   dishBeef: kai("dish-beef.webp"),
   dishFish: kai("dish-fish.webp"),
   dishDuck: kai("dish-duck.webp"),
+  stripFoodService: kai("strip-food-service.webp"),
+  stripPlatedBite: kai("strip-plated-bite.webp"),
+  stripCocktail: kai("strip-cocktail.webp"),
+  stripDiningService: kai("strip-dining-service.webp"),
 };
 
 export const birdIcons = [
@@ -61,10 +66,10 @@ export const photoStrips = {
     { src: images.dishBeef, alt: "Kai Maison beef dish" },
   ],
   form: [
-    { src: images.banquette, alt: "Kai Maison banquette tables" },
-    { src: images.tableRound, alt: "Kai Maison round table" },
-    { src: images.mantelTable, alt: "Kai Maison mantel table" },
-    { src: images.gardenTable, alt: "Kai Maison garden table" },
+    { src: images.stripFoodService, alt: "Kai Maison dish served at the marble counter" },
+    { src: images.stripPlatedBite, alt: "Kai Maison plated bite" },
+    { src: images.stripCocktail, alt: "Kai Maison cocktail" },
+    { src: images.stripDiningService, alt: "Kai Maison dining service" },
   ],
   contact: [
     { src: images.aboutHero, alt: "Kai Maison hallway" },
