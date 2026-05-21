@@ -921,15 +921,15 @@ function AboutPage({ onNavigate }) {
         </div>
         <div className="people-grid">
           <figure>
-            <SmartImage src={images.teamMimi} alt="Kai Maison service moment" loading="lazy" />
+            <SmartImage src={images.teamMimi} alt="Phuong at Kai Maison" loading="lazy" />
             <figcaption>Phuong</figcaption>
           </figure>
           <figure>
-            <SmartImage src={images.teamDoug} alt="Kai Maison dining detail" loading="lazy" />
+            <SmartImage src={images.teamDoug} alt="Hung at Kai Maison" loading="lazy" />
             <figcaption>Hung</figcaption>
           </figure>
           <figure>
-            <SmartImage src={images.teamDipti} alt="Kai Maison team detail" loading="lazy" />
+            <SmartImage src={images.teamDipti} alt="Kai Maison team" loading="lazy" />
             <figcaption>Team</figcaption>
           </figure>
         </div>
@@ -1239,7 +1239,7 @@ function Footer() {
               rel="noreferrer"
               aria-label="Coded by TUTTYLAB"
             >
-              <img className="tuttylab-logo" src={`${import.meta.env.BASE_URL}logo.svg`} alt="TUTTYLAB" />
+              TUTTY<span className="tuttylab-lab">LAB</span>
             </a>
             .
           </p>

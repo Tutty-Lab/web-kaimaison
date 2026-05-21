@@ -1930,21 +1930,28 @@ body.has-scrolled .site-header {
 .tuttylab-link {
   display: inline-flex;
   align-items: center;
-  line-height: 0;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0 1px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.2;
+  transition:
+    background-size 360ms var(--motion-image),
+    opacity 360ms var(--motion-image),
+    transform 360ms var(--motion-image);
 }
 
-.tuttylab-logo {
-  display: block;
-  width: 2.05rem;
-  height: 2.05rem;
-  object-fit: contain;
-  transition: transform 360ms var(--motion-image), opacity 360ms var(--motion-image);
-}
-
-.tuttylab-link:hover .tuttylab-logo,
-.tuttylab-link:focus-visible .tuttylab-logo {
-  opacity: 0.82;
+.tuttylab-link:hover,
+.tuttylab-link:focus-visible {
+  background-size: 100% 1px;
+  opacity: 0.9;
   transform: translateY(-1px);
+}
+
+.tuttylab-lab {
+  color: #7a4cff;
 }
 
 .footer-address p,

@@ -49,6 +49,9 @@ const kaiStripAssetMap = [
   ["2.jpg", "strip-plated-bite"],
   ["3.jpg", "strip-cocktail"],
   ["4.jpg", "strip-dining-service"],
+  ["5.jpg", "team-phuong"],
+  ["6.jpg", "team-hung"],
+  ["7.jpg", "team-group"],
 ];
 
 const birdAssetMap = [
