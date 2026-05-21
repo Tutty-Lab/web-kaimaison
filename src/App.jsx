@@ -434,14 +434,6 @@ function IconFacebook() {
   );
 }
 
-function IconTiktok() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.26 6.26 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.72a8.18 8.18 0 0 0 4.78 1.52V6.82a4.85 4.85 0 0 1-1.01-.13z"/>
-    </svg>
-  );
-}
-
 function HomePage({ onNavigate }) {
   return (
     <>
@@ -582,9 +574,6 @@ function SocialLinks() {
       </a>
       <a href={site.facebook} target="_blank" rel="noreferrer" aria-label="Facebook">
         <IconFacebook />
-      </a>
-      <a href={site.tiktok} target="_blank" rel="noreferrer" aria-label="TikTok">
-        <IconTiktok />
       </a>
     </div>
   );
@@ -1045,13 +1034,27 @@ function GiftCardsPage() {
   return (
     <>
       <section className="page-split form-page">
-        <div className="form-copy" data-motion="fade-up">
+        <div className="form-copy gift-card-copy" data-motion="fade-up">
           <MotionHeading as="h1">Gift Cards</MotionHeading>
           <p>A gift for any occasion!</p>
           <p>Treat your friends, family, or colleagues to the Kai Maison experience.</p>
           <p>
             Please contact us via the form or at <a href={`mailto:${site.email}`}>{site.email}</a> for more details.
           </p>
+          <div className="gift-card-preview" aria-label="Kai Maison gift card designs">
+            <SmartImage
+              className="gift-card-preview-teal"
+              src={images.giftCardTeal}
+              alt="Kai Maison teal gift card"
+              loading="lazy"
+            />
+            <SmartImage
+              className="gift-card-preview-purple"
+              src={images.giftCardPurple}
+              alt="Kai Maison purple gift card"
+              loading="lazy"
+            />
+          </div>
         </div>
         <GiftCardForm />
       </section>

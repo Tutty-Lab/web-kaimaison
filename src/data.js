@@ -43,6 +43,8 @@ export const images = {
   stripPlatedBite: kai("strip-plated-bite.webp"),
   stripCocktail: kai("strip-cocktail.webp"),
   stripDiningService: kai("strip-dining-service.webp"),
+  giftCardPurple: kai("gift-card-purple.webp"),
+  giftCardTeal: kai("gift-card-teal.webp"),
 };
 
 export const birdIcons = [
@@ -639,9 +641,8 @@ export const site = {
   hours: "Monday - Sunday: 12:00 pm - 12:00 am",
   reservation: "https://www.opentable.de/r/kai-maison-reservations-berlin?restref=333144&lang=en-US",
   maps: "https://www.google.com/maps/search/?api=1&query=Maybachufer%2023%2C%2012047%20Berlin",
-  instagram: "https://www.instagram.com/kaimaison.berlin",
-  facebook: "https://www.facebook.com/kaimaisonberlin",
-  tiktok: "https://www.tiktok.com/@kaimaisonberlin",
+  instagram: "https://www.instagram.com/kaimaisonberlin/",
+  facebook: "https://www.facebook.com/profile.php?id=61555660840396",
 };
 
 export const navItems = [

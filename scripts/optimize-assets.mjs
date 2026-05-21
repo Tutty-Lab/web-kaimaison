@@ -49,9 +49,9 @@ const kaiStripAssetMap = [
   ["2.jpg", "strip-plated-bite"],
   ["3.jpg", "strip-cocktail"],
   ["4.jpg", "strip-dining-service"],
-  ["5.jpg", "team-phuong"],
+  ["5.tif", "team-phuong"],
   ["6.jpg", "team-hung"],
-  ["7.jpg", "team-group"],
+  ["7.tif", "team-group"],
 ];
 
 const birdAssetMap = [
@@ -80,6 +80,8 @@ async function generatedAssetsComplete() {
     ...crawledAssetMap.flatMap(([, outputName]) => [`kai/${outputName}.webp`, `kai/${outputName}.jpg`]),
     ...kaiStripAssetMap.flatMap(([, outputName]) => [`kai/${outputName}.webp`, `kai/${outputName}.jpg`]),
     ...birdAssetMap.map(([, outputName]) => `bird/${outputName}`),
+    "kai/gift-card-purple.webp",
+    "kai/gift-card-teal.webp",
     "kai-maison-logo.svg",
     "menu-food.pdf",
     "menu-drinks.pdf",

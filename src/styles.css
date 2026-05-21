@@ -165,7 +165,7 @@ h3 {
 h1,
 h2 {
   color: var(--ink);
-  font-size: clamp(2.25rem, 3.4vw, 3.15rem);
+  font-size: clamp(2rem, 2.9vw, 2.75rem);
   line-height: 1.03;
 }
 
@@ -337,22 +337,28 @@ body.has-scrolled .site-header {
   background-size: 0 1px;
   color: var(--ink);
   font-family: var(--body);
-  font-size: 0.94rem;
+  font-size: 1.02rem;
   line-height: 1.45;
   min-height: 1.45em;
   text-transform: uppercase;
   transition:
     background-size 420ms var(--motion-ojigi),
     background-position 420ms var(--motion-ojigi),
+    color 240ms ease,
     opacity 180ms ease;
   white-space: nowrap;
 }
 
-.desktop-nav a:hover,
-.desktop-nav a:focus-visible,
 .desktop-nav a.active {
   background-position: 0 100%;
   background-size: 100% 1px;
+}
+
+.desktop-nav a:hover,
+.desktop-nav a:focus-visible {
+  background-position: 0 100%;
+  background-size: 100% 1px;
+  color: var(--pink);
 }
 
 .desktop-nav .reservation-link {
@@ -407,6 +413,16 @@ body.has-scrolled .site-header {
   object-position: center 44%;
 }
 
+.hero::after {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgba(245, 194, 222, 0.34);
+  content: "";
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
 .hero-logo {
   position: absolute;
   top: 50%;
@@ -446,6 +462,7 @@ body.has-scrolled .site-header {
   font-weight: 400;
   letter-spacing: 0;
   text-transform: uppercase;
+  z-index: 2;
 }
 
 .elgin-stamp-ring,
@@ -774,7 +791,7 @@ body.has-scrolled .site-header {
 }
 
 .summary-heading h2 {
-  font-size: 1.85rem;
+  font-size: 1.55rem;
 }
 
 .arrows {
@@ -1144,7 +1161,7 @@ body.has-scrolled .site-header {
 }
 
 .about-people-copy h2 {
-  font-size: 2.55rem;
+  font-size: 2.2rem;
   line-height: 1;
 }
 
@@ -1563,7 +1580,7 @@ body.has-scrolled .site-header {
 }
 
 .list-card h2 {
-  font-size: 1.34rem;
+  font-size: 1.18rem;
   line-height: 1.18;
 }
 
@@ -1655,7 +1672,7 @@ body.has-scrolled .site-header {
 }
 
 .post-title {
-  font-size: clamp(2.7rem, 5.4vw, 4.35rem);
+  font-size: clamp(2.2rem, 4.6vw, 3.45rem);
   line-height: 1.02;
 }
 
@@ -1698,6 +1715,39 @@ body.has-scrolled .site-header {
 
 .contact-form-stack .reservation-button {
   justify-self: start;
+}
+
+.gift-card-copy {
+  align-content: start;
+}
+
+.gift-card-preview {
+  position: relative;
+  width: min(430px, 100%);
+  min-height: clamp(290px, 29vw, 380px);
+  margin-top: clamp(1.1rem, 3vw, 2.6rem);
+}
+
+.gift-card-preview img {
+  position: absolute;
+  display: block;
+  width: min(335px, 88%);
+  height: auto;
+  aspect-ratio: auto;
+  filter: drop-shadow(0 12px 18px rgba(9, 9, 9, 0.08));
+  object-fit: contain;
+}
+
+.gift-card-preview-teal {
+  left: -0.75rem;
+  top: 5.3rem;
+  z-index: 1;
+}
+
+.gift-card-preview-purple {
+  left: 2.35rem;
+  top: 0;
+  z-index: 2;
 }
 
 .elgin-form {
@@ -1787,17 +1837,17 @@ body.has-scrolled .site-header {
 
   .page-split h1,
   .page-split h2 {
-    font-size: 2.2rem;
+    font-size: 2rem;
     line-height: 1;
   }
 
   .about-intro h1 {
-    font-size: 2.875rem;
+    font-size: 2.55rem;
   }
 
   .form-page h1 {
-    font-size: 2.0825rem;
-    line-height: 1.654;
+    font-size: 1.9rem;
+    line-height: 1.32;
   }
 }
 
@@ -2146,7 +2196,7 @@ body.has-scrolled .site-header {
 
 @media (max-width: 1040px) {
   .desktop-nav a {
-    font-size: 0.82rem;
+    font-size: 0.9rem;
   }
 }
 
@@ -2317,15 +2367,15 @@ body.has-scrolled .site-header {
   }
 
   .mosaic-copy-welcome h2 {
-    font-size: clamp(2.6rem, 12vw, 3.25rem);
+    font-size: clamp(2.2rem, 9.6vw, 2.65rem);
   }
 
   .mosaic-copy-sharing h2 {
-    font-size: clamp(2.25rem, 10vw, 2.85rem);
+    font-size: clamp(1.95rem, 8.6vw, 2.35rem);
   }
 
   .mosaic-copy-natural h2 {
-    font-size: clamp(2.25rem, 10vw, 2.9rem);
+    font-size: clamp(1.95rem, 8.6vw, 2.35rem);
   }
 
   .copy-stack {
@@ -2382,7 +2432,7 @@ body.has-scrolled .site-header {
   }
 
   .summary-heading h2 {
-    font-size: clamp(2rem, 8vw, 2.4rem);
+    font-size: clamp(1.55rem, 6.4vw, 1.9rem);
   }
 
   .photo-strip {
@@ -2447,6 +2497,7 @@ body.has-scrolled .site-header {
 
   .about-menu>div {
     padding: 3rem 0 4rem;
+    order: 1;
   }
 
   .about-intro>img,
@@ -2456,6 +2507,10 @@ body.has-scrolled .site-header {
     min-height: 0;
     aspect-ratio: 4 / 5;
     object-fit: cover;
+  }
+
+  .about-menu>img {
+    order: 2;
   }
 
   .about-people {
@@ -2502,6 +2557,25 @@ body.has-scrolled .site-header {
 
   .form-page {
     grid-template-columns: 1fr;
+  }
+
+  .gift-card-preview {
+    width: min(430px, 100%);
+    min-height: clamp(260px, 56vw, 330px);
+    margin-top: 1.25rem;
+  }
+
+  .gift-card-preview img {
+    width: min(300px, 84vw);
+  }
+
+  .gift-card-preview-teal {
+    left: -0.45rem;
+    top: 4.5rem;
+  }
+
+  .gift-card-preview-purple {
+    left: 1.15rem;
   }
 
   .menu-code-shell {
@@ -2608,7 +2682,7 @@ body.has-scrolled .site-header {
 
   h1,
   h2 {
-    font-size: clamp(2.2rem, 10vw, 2.75rem);
+    font-size: clamp(1.95rem, 8.5vw, 2.35rem);
   }
 
   p {
@@ -2640,6 +2714,18 @@ body.has-scrolled .site-header {
 
   .summary-page {
     gap: 1.75rem 0.6rem;
+  }
+
+  .gift-card-preview {
+    min-height: 250px;
+  }
+
+  .gift-card-preview img {
+    width: min(280px, 84vw);
+  }
+
+  .gift-card-preview-teal {
+    top: 4rem;
   }
 
   .mobile-menu {
@@ -2677,7 +2763,7 @@ body.has-scrolled .site-header {
   }
 
   .post-title {
-    font-size: clamp(2.65rem, 12vw, 3.75rem);
+    font-size: clamp(2.15rem, 9vw, 3rem);
   }
 
   .name-grid,
