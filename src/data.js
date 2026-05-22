@@ -11,7 +11,7 @@ export const images = {
   teamMimi: kai("team-phuong.webp"),
   teamDoug: kai("team-hung.webp"),
   teamDipti: kai("team-group.webp"),
-  chef: generated("bar-tables.webp"),
+  chef: kai("strip-food-service.webp"),
   menuHand: kai("menu-table.webp"),
   wine: publicAsset("wine.jpg"),
   dessert: kai("dish-fish.webp"),

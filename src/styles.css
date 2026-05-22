@@ -643,7 +643,10 @@ body.has-scrolled .site-header {
   min-height: clamp(650px, 37vw, 730px);
 }
 
-.mosaic-image-chef img,
+.mosaic-image-chef img {
+  object-position: 50% 58%;
+}
+
 .mosaic-image-wine img {
   object-position: 50% 24%;
 }
@@ -1237,19 +1240,21 @@ body.has-scrolled .site-header {
 
 .kai-menu-grid {
   display: grid;
-  width: min(1440px, 100%);
+  width: min(1180px, calc(100% - 6rem));
   margin: 0 auto;
-  padding: 0 clamp(1rem, 2.3vw, 2.1rem);
+  padding: 0;
   align-items: start;
 }
 
 .kai-menu-grid-food {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(1.5rem, 3vw, 3rem) clamp(2rem, 4vw, 4rem);
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  gap: clamp(1.4rem, 2.8vw, 2.8rem);
 }
 
 .kai-menu-grid-drinks {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: min(1120px, calc(100% - 6rem));
   gap: clamp(1.2rem, 2vw, 1.8rem);
 }
 
@@ -1265,8 +1270,14 @@ body.has-scrolled .site-header {
 }
 
 .kai-menu-panel-food {
+  width: min(760px, 100%);
   overflow: hidden;
+  margin-inline: auto;
   padding: clamp(1.2rem, 2vw, 1.8rem) 0 clamp(1.35rem, 2.5vw, 2.15rem);
+}
+
+.kai-menu-panel-food.kai-menu-panel-wide {
+  width: min(1120px, 100%);
 }
 
 .kai-menu-panel-food::before {
@@ -1313,6 +1324,7 @@ body.has-scrolled .site-header {
   position: relative;
   z-index: 1;
   display: grid;
+  align-items: start;
   gap: 1.2rem;
 }
 
@@ -1321,9 +1333,19 @@ body.has-scrolled .site-header {
   column-gap: clamp(1.5rem, 3vw, 3.4rem);
 }
 
+.kai-menu-panel-food .kai-menu-panel-header,
+.kai-menu-panel-food .kai-menu-panel-body {
+  width: min(760px, 100%);
+  margin-inline: auto;
+}
+
+.kai-menu-panel-food.kai-menu-panel-wide .kai-menu-panel-header {
+  width: min(1120px, 100%);
+}
+
 .kai-menu-panel-food.kai-menu-panel-wide .kai-menu-panel-body {
   width: min(980px, 100%);
-  margin-left: auto;
+  margin-inline: auto;
 }
 
 .kai-menu-panel-wide .kai-menu-group:only-child {
@@ -1337,6 +1359,7 @@ body.has-scrolled .site-header {
 
 .kai-menu-group {
   display: grid;
+  align-content: start;
   gap: 0.85rem;
   min-width: 0;
 }
@@ -1872,11 +1895,11 @@ body.has-scrolled .site-header {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 150px 1fr 1fr 1.1fr auto;
-  gap: 3rem;
+  grid-template-columns: minmax(170px, auto) minmax(190px, 1fr) minmax(230px, 1fr) auto;
+  gap: 1.45rem 3rem;
   width: min(1200px, calc(100% - 3rem));
   margin: 0 auto;
-  padding: 3rem 0;
+  padding: 3rem 0 2.1rem;
   align-items: center;
 }
 
@@ -1903,10 +1926,28 @@ body.has-scrolled .site-header {
   gap: 0.2rem;
 }
 
+.footer-meta {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  justify-self: center;
+  width: min(560px, 100%);
+  margin-top: 0.35rem;
+  text-align: center;
+}
+
 .footer-credit {
   display: flex;
   align-items: center;
   gap: 0.35rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.footer-social {
+  grid-column: 4;
+  grid-row: 1;
+  align-self: center;
+  justify-self: end;
 }
 
 .tuttylab-link {
@@ -2361,7 +2402,7 @@ body.has-scrolled .site-header {
     min-height: 0;
     margin: 0 auto;
     width: calc(100% - 3rem);
-    padding-bottom: 4rem;
+    padding: 3.4rem 0 4rem;
   }
 
   .about-people-copy {
@@ -2427,8 +2468,18 @@ body.has-scrolled .site-header {
   .kai-menu-grid,
   .kai-menu-grid-food,
   .kai-menu-grid-drinks {
+    width: 100%;
     grid-template-columns: 1fr;
     padding-inline: 1.5rem;
+  }
+
+  .kai-menu-panel-food,
+  .kai-menu-panel-food.kai-menu-panel-wide,
+  .kai-menu-panel-food .kai-menu-panel-header,
+  .kai-menu-panel-food .kai-menu-panel-body,
+  .kai-menu-panel-food.kai-menu-panel-wide .kai-menu-panel-header {
+    width: 100%;
+    margin-inline: 0;
   }
 
   .kai-menu-panel-wide,
@@ -2504,14 +2555,24 @@ body.has-scrolled .site-header {
     width: 100%;
   }
 
-  .footer-inner .social-links {
+  .footer-social {
     order: 4;
+    grid-column: auto;
+    grid-row: auto;
     justify-self: center;
+  }
+
+  .footer-inner .social-links {
     margin: 0.6rem 0 0.5rem;
   }
 
   .footer-inner .footer-meta {
     order: 5;
+    grid-column: auto;
+    grid-row: auto;
+    width: 100%;
+    justify-self: center;
+    text-align: center;
   }
 
   .footer-address,

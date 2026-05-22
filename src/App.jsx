@@ -1058,7 +1058,7 @@ function ContactPage() {
           </p>
           <SocialLinks />
         </div>
-        <GiftCardForm />
+        <ContactForm />
       </section>
       <PhotoStrip items={photoStrips.contact} />
     </>
@@ -1222,7 +1222,7 @@ function Footer() {
             .
           </p>
         </div>
-        <div data-motion="fade-up" data-motion-delay="340">
+        <div className="footer-social" data-motion="fade-up" data-motion-delay="340">
           <SocialLinks />
         </div>
       </div>
