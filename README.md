@@ -1,32 +1,43 @@
-﻿# Kai Maison
+# Kai Maison
 
 Website Kai Maison build bằng Vite + React, deploy lên Hostinger. Form liên hệ dùng endpoint PHP tại `public/api/contact.php`; secret Resend/Turnstile nằm trong file config private ngoài public web root.
 
-## 1. Chạy local
+## 1. Clone repo
+
+Windows PowerShell hoặc macOS Terminal:
+
+```bash
+git clone https://github.com/Daeyang-Sea/kaimaison.git
+cd kaimaison
+```
+
+## 2. Chạy local
 
 Cài dependency:
 
-```powershell
+```bash
 npm install
 ```
 
 Chạy dev server:
 
-```powershell
+```bash
 npm run dev
 ```
 
 Mở URL Vite in ra terminal, thường là `http://127.0.0.1:5173/` hoặc `http://127.0.0.1:5174/`.
 
-## 2. Build production
+## 3. Build production
 
-Cách bình thường:
+Cách chính:
 
-```powershell
+```bash
 npm run build
 ```
 
-Nếu Windows báo lỗi kiểu `The system cannot find the path specified`, dùng cách fallback này:
+Sau khi build xong sẽ có folder `dist/`. Script build tự chạy optimize assets và tạo thêm route tĩnh như `/contact`, `/events`, `/impressum`, `404.html` để refresh trang trên Hostinger không bị lỗi.
+
+Nếu máy Windows nào đó vẫn báo lỗi kiểu `The system cannot find the path specified`, dùng fallback:
 
 ```powershell
 npm run optimize:assets
@@ -34,11 +45,9 @@ node node_modules\vite\bin\vite.js build
 npm run prepare:pages
 ```
 
-Sau khi build xong sẽ có folder `dist/`. Script `prepare:pages` tạo thêm route tĩnh như `/contact`, `/events`, `/impressum` và `404.html` để refresh trang trên Hostinger không bị lỗi.
+## 4. Upload lên Hostinger từ Windows
 
-## 3. Upload lên Hostinger bằng terminal
-
-Chạy từ thư mục gốc project `D:\kaimaison`. Không ghi password thật vào git.
+Chạy từ thư mục gốc project. Không ghi password thật vào git.
 
 ```powershell
 $env:FTP_HOST="92.113.18.6"
@@ -49,8 +58,6 @@ $env:FTP_REMOTE_DIR="/"
 python scripts\hostinger-upload.py
 ```
 
-Script này upload toàn bộ nội dung trong `dist/` lên FTP root đang serve `kaimaison.de`. Script không upload folder `private/`.
-
 Nếu Hostinger bắt dùng FTPS:
 
 ```powershell
@@ -58,31 +65,51 @@ $env:FTP_USE_TLS="1"
 python scripts\hostinger-upload.py
 ```
 
-## 4. Kiểm tra sau khi upload
+## 5. Upload lên Hostinger từ macOS
 
-Kiểm tra site trả về OK:
+Chạy từ thư mục gốc project. macOS thường có `python3`, nên dùng `python3` thay vì `python`.
+
+```bash
+export FTP_HOST="92.113.18.6"
+export FTP_PORT="21"
+export FTP_USER="u186007800.codexupload"
+export FTP_PASS="YOUR_FTP_PASSWORD"
+export FTP_REMOTE_DIR="/"
+python3 scripts/hostinger-upload.py
+```
+
+Nếu Hostinger bắt dùng FTPS:
+
+```bash
+export FTP_USE_TLS="1"
+python3 scripts/hostinger-upload.py
+```
+
+Script upload toàn bộ nội dung trong `dist/` lên FTP root đang serve `kaimaison.de`. Script không upload folder `private/`.
+
+## 6. Kiểm tra sau khi upload
+
+Windows PowerShell:
 
 ```powershell
 curl.exe -I -L https://kaimaison.de/
-```
-
-Kiểm tra HTML mới có asset/GTM:
-
-```powershell
 curl.exe -s -L "https://kaimaison.de/?v=$(Get-Date -Format yyyyMMddHHmmss)" | Select-String -Pattern "GTM-MJS9V7RD|assets/"
-```
-
-Kiểm tra contact API có chạy PHP:
-
-```powershell
 curl.exe -s -X POST https://kaimaison.de/api/contact.php -H "Content-Type: application/json" --data "{}"
 ```
 
-Kết quả đúng là JSON lỗi validate, ví dụ `VALIDATION_ERROR`. Nếu thấy PHP source, HTML, hoặc 404 thì sai path/API trên Hostinger.
+macOS Terminal:
+
+```bash
+curl -I -L https://kaimaison.de/
+curl -s -L "https://kaimaison.de/?v=$(date +%Y%m%d%H%M%S)" | grep -E "GTM-MJS9V7RD|assets/"
+curl -s -X POST https://kaimaison.de/api/contact.php -H "Content-Type: application/json" --data "{}"
+```
+
+Kết quả đúng của contact API là JSON lỗi validate, ví dụ `VALIDATION_ERROR`. Nếu thấy PHP source, HTML, hoặc 404 thì sai path/API trên Hostinger.
 
 Nếu live site vẫn hiện nội dung cũ: vào Hostinger Cache Manager clear cache, sau đó hard refresh browser.
 
-## 5. Config contact form trên Hostinger
+## 7. Config contact form trên Hostinger
 
 Không upload `private/kai-contact-config.php` lên public root. File config thật phải nằm ngoài public web root trên Hostinger.
 
@@ -100,7 +127,7 @@ return [
 
 Chi tiết setup contact backend nằm ở `docs/hostinger-contact.md`.
 
-## 6. File có thể xóa khi dọn dẹp
+## 8. File có thể xóa khi dọn dẹp
 
 Các file/folder generated hoặc log có thể xóa an toàn:
 
