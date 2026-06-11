@@ -1,8 +1,142 @@
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { birdIcons, eventItems, images, menuDocuments, navItems, photoStrips, pressItems, site } from "./data.js";
+import impressumText from "./impressumText.txt?raw";
 import { useOjigiMotion } from "./motion.js";
 
 const appBase = import.meta.env.BASE_URL || "/";
+const turnstileScriptId = "kai-turnstile-script";
+const turnstileScriptSrc = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+const cookieConsentStorageKey = "kai_cookie_consent_v1";
+const cookieConsentCookieName = "kai_cookie_consent";
+const contactInitialState = {
+  firstName: "",
+  lastName: "",
+  phone: "",
+  email: "",
+  message: "",
+  website: "",
+  details: {},
+};
+
+const legalSubheadingBlocks = new Set([
+  "Geltungsbereich",
+  "Verantwortlicher",
+  "Externe Hosting-Leistungen durch Kinsta, Inc.",
+  "Warenwirtschaftssystem:",
+  "Datenweitergabe an Versanddienstleister zum Zwecke der Versandankündigung:",
+  "Unser Versanddienstleister:",
+  "Die von uns genutzten Zahlungsdienstleister sind:",
+  "Visa und Mastercard",
+  "PayPal",
+  "Vorkasse und Rechnung",
+  "Sofortüberweisung (Klarna)",
+  "Maestro Card",
+  "Google Fonts:",
+  "Widerspruchsrecht",
+]);
+const legalLinkPattern = /(https?:\/\/[^\s]+|[\w.+-]+@[\w.-]+\.[A-Za-z]{2,})/g;
+
+function normalizeLegalBlock(block) {
+  const lines = block.split("\n");
+  const firstLine = lines[0]?.trim();
+
+  if (lines.length > 1 && legalSubheadingBlocks.has(firstLine)) {
+    return [firstLine, lines.slice(1).join("\n").trim()].filter(Boolean);
+  }
+
+  return [block];
+}
+
+const impressumBlocks = impressumText
+  .trim()
+  .split(/\n{2,}/)
+  .map((block) => block.trim())
+  .filter(Boolean)
+  .flatMap(normalizeLegalBlock);
+const impressumTitle = impressumBlocks[0] || "Impressum";
+const impressumBodyBlocks = impressumBlocks.slice(1);
+
+const contactFormConfigs = {
+  contact: {
+    formType: "contact",
+    nameLegend: "Name",
+    phoneLabel: "Phone",
+    emailLabel: "Email",
+    messageLabel: "Message",
+    successMessage: "Thank you. Your message has been sent.",
+    detailFields: [],
+  },
+  functions: {
+    formType: "functions",
+    nameLegend: "Name",
+    phoneLabel: "Phone",
+    emailLabel: "Email",
+    messageLabel: "Message",
+    successMessage: "Thank you. Your function enquiry has been sent.",
+    detailFields: [
+      { name: "eventDate", label: "Date of Event", type: "date", className: "short-field" },
+      { name: "budget", label: "Budget", className: "short-field", maxLength: 80 },
+      { name: "guestCount", label: "Approximate Number of People", maxLength: 80 },
+    ],
+  },
+  giftCard: {
+    formType: "giftCard",
+    nameLegend: "Your Name",
+    phoneLabel: "Your Phone Number",
+    emailLabel: "Your Email",
+    messageLabel: "Anything else you need to tell us?",
+    successMessage: "Thank you. Your gift card enquiry has been sent.",
+    detailFields: [
+      { name: "recipientName", label: "Recipient Name", required: true, maxLength: 120 },
+      {
+        name: "giftCardAmount",
+        label: "Gift Card Amount (€)",
+        type: "select",
+        required: true,
+        options: ["€50", "€75", "€100", "Other"],
+      },
+    ],
+  },
+};
+
+function createContactFormState(config) {
+  return {
+    ...contactInitialState,
+    details: Object.fromEntries(config.detailFields.map((field) => [field.name, ""])),
+  };
+}
+
+function getTurnstileSiteKey() {
+  if (typeof window !== "undefined" && window.KAI_CONTACT_CONFIG?.turnstileSiteKey) {
+    return window.KAI_CONTACT_CONFIG.turnstileSiteKey;
+  }
+
+  return import.meta.env.VITE_TURNSTILE_SITE_KEY || "";
+}
+
+function loadTurnstileScript() {
+  if (typeof window === "undefined") return Promise.reject(new Error("Turnstile requires a browser"));
+  if (window.turnstile) return Promise.resolve(window.turnstile);
+
+  const existingScript = document.getElementById(turnstileScriptId);
+  if (existingScript) {
+    return new Promise((resolve, reject) => {
+      existingScript.addEventListener("load", () => resolve(window.turnstile), { once: true });
+      existingScript.addEventListener("error", reject, { once: true });
+    });
+  }
+
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.id = turnstileScriptId;
+    script.src = turnstileScriptSrc;
+    script.async = true;
+    script.defer = true;
+    script.onload = () => resolve(window.turnstile);
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+}
 
 function normalizePath(pathname) {
   const base = appBase.endsWith("/") ? appBase.slice(0, -1) : appBase;
@@ -24,6 +158,36 @@ function localHref(path) {
   const clean = normalizePath(path);
   const base = appBase.endsWith("/") ? appBase : `${appBase}/`;
   return `${base}${clean.replace(/^\//, "")}`;
+}
+
+function hasStoredCookieConsent() {
+  if (typeof window === "undefined") return true;
+
+  try {
+    if (window.localStorage.getItem(cookieConsentStorageKey)) return true;
+  } catch {
+    // Ignore storage restrictions and fall back to the cookie.
+  }
+
+  return document.cookie
+    .split(";")
+    .some((cookie) => cookie.trim().startsWith(`${cookieConsentCookieName}=`));
+}
+
+function storeCookieConsent() {
+  const payload = JSON.stringify({
+    status: "accepted",
+    acceptedAt: new Date().toISOString(),
+  });
+
+  try {
+    window.localStorage.setItem(cookieConsentStorageKey, payload);
+  } catch {
+    // The consent cookie below is enough if localStorage is unavailable.
+  }
+
+  const secure = window.location.protocol === "https:" ? "; Secure" : "";
+  document.cookie = `${cookieConsentCookieName}=accepted; Max-Age=15552000; Path=/; SameSite=Lax${secure}`;
 }
 
 function findPostByPath(path) {
@@ -191,13 +355,15 @@ function App() {
       case "/press":
         return <ListPage items={pressItems} title="Press" onNavigate={navigate} />;
       case "/events":
-        return <ListPage items={eventItems} title="Events" showOlder onNavigate={navigate} />;
+        return <ListPage items={eventItems} title="Events" onNavigate={navigate} />;
       case "/functions-catering":
         return <FunctionsPage />;
       case "/gift-cards":
         return <GiftCardsPage />;
       case "/contact":
         return <ContactPage />;
+      case "/impressum":
+        return <ImpressumPage />;
       default:
         return <NotFound onNavigate={navigate} />;
     }
@@ -209,7 +375,8 @@ function App() {
       <div className={`app-shell${assetsReady ? " is-ready" : ""}`} aria-hidden={assetsReady ? undefined : "true"}>
         <Header currentPath={path} onNavigate={navigate} />
         <main>{page}</main>
-        <Footer />
+        <Footer onNavigate={navigate} />
+        <CookieConsent onNavigate={navigate} />
       </div>
     </>
   );
@@ -925,7 +1092,7 @@ function ListPage({ items, showOlder = false, onNavigate }) {
                 <SmartImage src={item.image} alt={item.title} loading="lazy" />
               </div>
             )}
-            <time dateTime={item.date}>{formatDate(item.date)}</time>
+            {item.date && <time dateTime={item.date}>{formatDate(item.date)}</time>}
             <MotionHeading>{item.title}</MotionHeading>
             <p>{item.summary}</p>
             <a
@@ -961,10 +1128,67 @@ function PostDetailPage({ item, onNavigate }) {
           <SmartImage src={item.image} alt={item.title} />
         </div>
       )}
-      <time dateTime={item.date}>{formatDate(item.date)}</time>
+      {item.date && <time dateTime={item.date}>{formatDate(item.date)}</time>}
       <MotionHeading as="h1" className="post-title">{item.title}</MotionHeading>
-      <p className="post-summary">{item.summary}</p>
+      {item.content?.length ? (
+        <div className="post-content">
+          {item.content.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
+      ) : (
+        <p className="post-summary">{item.summary}</p>
+      )}
     </article>
+  );
+}
+
+function getLegalBlockTag(block) {
+  if (/^\d+\.\s/.test(block)) return "h2";
+  if (/^\d+\.\d+\s/.test(block)) return "h3";
+  if (legalSubheadingBlocks.has(block)) return "h3";
+  if (block.length <= 80 && !block.includes("\n") && /:$/.test(block)) return "h3";
+  return "p";
+}
+
+function renderLegalInlineText(block) {
+  return block.split(legalLinkPattern).map((part, index) => {
+    if (/^https?:\/\//.test(part)) {
+      const href = part.replace(/[.,;:]+$/, "");
+      const suffix = part.slice(href.length);
+      return (
+        <Fragment key={`${href}-${index}`}>
+          <a href={href} target="_blank" rel="noreferrer">
+            {href}
+          </a>
+          {suffix}
+        </Fragment>
+      );
+    }
+
+    if (/^[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}$/.test(part)) {
+      return (
+        <a href={`mailto:${part}`} key={`${part}-${index}`}>
+          {part}
+        </a>
+      );
+    }
+
+    return part;
+  });
+}
+
+function ImpressumPage() {
+  return (
+    <section className="page-shell legal-page">
+      <MotionHeading as="h1">{impressumTitle}</MotionHeading>
+      <div className="legal-text">
+        {impressumBodyBlocks.map((block) => {
+          const Tag = getLegalBlockTag(block);
+          return <Tag key={block}>{renderLegalInlineText(block)}</Tag>;
+        })}
+      </div>
+    </section>
   );
 }
 
@@ -998,7 +1222,7 @@ function FunctionsPage() {
             <a href={`mailto:${site.email}`}>{site.email}</a>, and we will be happy to create something for you.
           </p>
         </div>
-        <ContactForm />
+        <ContactForm variant="functions" />
       </section>
       <PhotoStrip items={photoStrips.form} />
     </>
@@ -1031,7 +1255,7 @@ function GiftCardsPage() {
             />
           </div>
         </div>
-        <GiftCardForm />
+        <ContactForm variant="giftCard" />
       </section>
       <PhotoStrip items={photoStrips.form} />
     </>
@@ -1041,24 +1265,23 @@ function GiftCardsPage() {
 function ContactPage() {
   return (
     <>
-      <section className="page-split form-page">
-        <div className="form-copy" data-motion="fade-up">
+      <section className="page-shell contact-page">
+        <div className="form-copy contact-copy" data-motion="fade-up">
           <MotionHeading as="h1">Contact us</MotionHeading>
           <ContactLines showEmail={false} />
           <a className="outline-button direction-button" href={site.maps} target="_blank" rel="noreferrer">
             Direction
           </a>
-          <p>
+          <p className="contact-email-note">
             For any marketing, media & PR enquiries, billing or other enquiry, please email:{" "}
             <a href={`mailto:${site.email}`}>{site.email}</a>
           </p>
-          <p>
-            <strong>Opening Hours:</strong><br />
-            {site.hours}
+          <p className="contact-hours">
+            <strong>Opening Hours:</strong>
+            <span>{site.hours}</span>
           </p>
           <SocialLinks />
         </div>
-        <ContactForm />
       </section>
       <PhotoStrip items={photoStrips.contact} />
     </>
@@ -1069,99 +1292,301 @@ function RequiredMark() {
   return <span className="field-required">(required)</span>;
 }
 
-function NameFields({ legend = "Name", first = "First Name", last = "Last Name" }) {
-  return (
-    <fieldset className="name-fieldset">
-      <legend>{legend}</legend>
-      <div className="name-grid">
-        <label>
-          <span>{first} <RequiredMark /></span>
-          <input type="text" autoComplete="given-name" />
-        </label>
-        <label>
-          <span>{last} <RequiredMark /></span>
-          <input type="text" autoComplete="family-name" />
-        </label>
-      </div>
-    </fieldset>
-  );
-}
-
-function TextField({ label, required = false, type = "text", className = "" }) {
+function TextInput({ label, required = false, className = "", ...inputProps }) {
   return (
     <label className={className}>
       <span>{label} {required && <RequiredMark />}</span>
-      <input type={type} />
+      <input required={required} {...inputProps} />
     </label>
   );
 }
 
-function MessageField({ label = "Message", required = false }) {
-  return (
-    <label>
-      <span>{label} {required && <RequiredMark />}</span>
-      <textarea rows="6" />
-    </label>
-  );
-}
+function DetailInput({ field, value, onChange }) {
+  const commonProps = {
+    name: `details.${field.name}`,
+    required: field.required,
+    value,
+    onChange,
+  };
 
-function FormShell({ children }) {
-  return (
-    <form className="kai-form" data-motion="fade-up" data-motion-delay="160" onSubmit={(event) => event.preventDefault()}>
-      {children}
-      <button className="outline-button" type="submit">
-        Send
-      </button>
-    </form>
-  );
-}
-
-function FunctionsForm() {
-  return (
-    <FormShell>
-      <NameFields />
-      <TextField label="Phone" />
-      <TextField label="Email" required type="email" />
-      <TextField label="Date of Event" type="date" className="short-field" />
-      <TextField label="Budget" className="short-field" />
-      <TextField label="Approximate Number of People" />
-      <MessageField />
-    </FormShell>
-  );
-}
-
-function GiftCardForm() {
-  return (
-    <FormShell>
-      <NameFields legend="Your Name" />
-      <TextField label="Your Phone Number" />
-      <TextField label="Your Email" required type="email" />
-      <TextField label="Recipient Name" required />
-      <label>
-        <span>Gift Card Amount (€) <RequiredMark /></span>
-        <select defaultValue="">
+  if (field.type === "select") {
+    return (
+      <label className={field.className || ""}>
+        <span>{field.label} {field.required && <RequiredMark />}</span>
+        <select {...commonProps}>
           <option value="" disabled>
             Select an amount
           </option>
-          <option>€50</option>
-          <option>€75</option>
-          <option>€100</option>
-          <option>Other</option>
+          {field.options.map((option) => (
+            <option key={option}>{option}</option>
+          ))}
         </select>
       </label>
-      <MessageField label="Anything else you need to tell us?" />
-    </FormShell>
+    );
+  }
+
+  return (
+    <TextInput
+      label={field.label}
+      name={`details.${field.name}`}
+      type={field.type || "text"}
+      className={field.className || ""}
+      required={field.required}
+      maxLength={field.maxLength || 120}
+      value={value}
+      onChange={onChange}
+    />
   );
 }
 
-function ContactForm() {
+function ContactForm({ variant = "contact" }) {
+  const config = contactFormConfigs[variant] || contactFormConfigs.contact;
+  const initialFormData = useMemo(() => createContactFormState(config), [config]);
+  const [formData, setFormData] = useState(initialFormData);
+  const [status, setStatus] = useState("idle");
+  const [feedback, setFeedback] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const [startedAt, setStartedAt] = useState(() => Date.now());
+  const turnstileContainerRef = useRef(null);
+  const turnstileWidgetRef = useRef(null);
+  const turnstileSiteKey = getTurnstileSiteKey();
+  const isSending = status === "sending";
+
+  useEffect(() => {
+    if (!turnstileSiteKey || !turnstileContainerRef.current) return undefined;
+
+    let cancelled = false;
+
+    loadTurnstileScript()
+      .then((turnstile) => {
+        if (cancelled || !turnstileContainerRef.current || turnstileWidgetRef.current !== null) return;
+
+        turnstileWidgetRef.current = turnstile.render(turnstileContainerRef.current, {
+          sitekey: turnstileSiteKey,
+          theme: "light",
+          callback: (token) => setTurnstileToken(token),
+          "expired-callback": () => setTurnstileToken(""),
+          "error-callback": () => setTurnstileToken(""),
+        });
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setStatus("error");
+          setFeedback("We could not load the verification check. Please refresh and try again.");
+        }
+      });
+
+    return () => {
+      cancelled = true;
+      if (window.turnstile && turnstileWidgetRef.current !== null) {
+        window.turnstile.remove(turnstileWidgetRef.current);
+        turnstileWidgetRef.current = null;
+      }
+    };
+  }, [turnstileSiteKey]);
+
+  function resetTurnstile() {
+    setTurnstileToken("");
+    if (window.turnstile && turnstileWidgetRef.current !== null) {
+      window.turnstile.reset(turnstileWidgetRef.current);
+    }
+  }
+
+  function readTurnstileToken() {
+    if (turnstileToken) return turnstileToken;
+
+    if (window.turnstile && turnstileWidgetRef.current !== null) {
+      const widgetToken = window.turnstile.getResponse(turnstileWidgetRef.current);
+      if (widgetToken) return widgetToken;
+    }
+
+    const inputToken = turnstileContainerRef.current
+      ?.querySelector('input[name="cf-turnstile-response"]')
+      ?.value;
+
+    return inputToken || "";
+  }
+
+  function updateField(event) {
+    const { name, value } = event.target;
+    if (name.startsWith("details.")) {
+      const detailName = name.slice("details.".length);
+      setFormData((current) => ({
+        ...current,
+        details: {
+          ...current.details,
+          [detailName]: value,
+        },
+      }));
+      return;
+    }
+
+    setFormData((current) => ({ ...current, [name]: value }));
+  }
+
+  function resetForm() {
+    setFormData(createContactFormState(config));
+    setStartedAt(Date.now());
+    resetTurnstile();
+  }
+
+  function getErrorMessage(code) {
+    if (code === "CAPTCHA_FAILED") return "Please complete the verification check and try again.";
+    if (code === "RATE_LIMITED") return "Too many messages were sent from this device. Please try again later.";
+    if (code === "MAIL_FAILED") return "We could not send your message right now. Please email us directly.";
+    return "Please check the form fields and try again.";
+  }
+
+  function getValidationMessage(field) {
+    if (field === "email") return "Please enter a valid email address.";
+    if (field === "message") return "Please write a message with at least 2 characters.";
+    if (field === "firstName" || field === "lastName") return "Please enter your first and last name.";
+    if (field === "startedAt") return "Please wait a moment before sending.";
+    if (field === "turnstileToken") return "Please complete the verification check and try again.";
+    if (field?.startsWith("details.")) {
+      const detailName = field.slice("details.".length);
+      const detailField = config.detailFields.find((item) => item.name === detailName);
+      return `Please complete ${detailField?.label || "the enquiry details"}.`;
+    }
+    if (field === "formType") return "Please refresh and try again.";
+    return "Please check the form fields and try again.";
+  }
+
+  async function submitContact(event) {
+    event.preventDefault();
+    setStatus("sending");
+    setFeedback("");
+    const verifiedToken = readTurnstileToken();
+
+    if (!turnstileSiteKey || !verifiedToken) {
+      setStatus("error");
+      setFeedback("Please complete the verification check before sending.");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/contact.php", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          formType: config.formType,
+          turnstileToken: verifiedToken,
+          startedAt,
+        }),
+      });
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok || !result.ok) {
+        setStatus("error");
+        setFeedback(result.code === "VALIDATION_ERROR" ? getValidationMessage(result.field) : getErrorMessage(result.code));
+        resetTurnstile();
+        return;
+      }
+
+      setStatus("success");
+      setFeedback(config.successMessage);
+      resetForm();
+    } catch {
+      setStatus("error");
+      setFeedback("We could not send your message right now. Please email us directly.");
+      resetTurnstile();
+    }
+  }
+
   return (
-    <FormShell>
-      <NameFields />
-      <TextField label="Phone" />
-      <TextField label="Email" required type="email" />
-      <MessageField required />
-    </FormShell>
+    <form className="kai-form" data-motion="fade-up" data-motion-delay="160" onSubmit={submitContact}>
+      <fieldset className="name-fieldset">
+        <legend>{config.nameLegend}</legend>
+        <div className="name-grid">
+          <label>
+            <span>First Name <RequiredMark /></span>
+            <input
+              type="text"
+              name="firstName"
+              autoComplete="given-name"
+              required
+              maxLength="80"
+              value={formData.firstName}
+              onChange={updateField}
+            />
+          </label>
+          <label>
+            <span>Last Name <RequiredMark /></span>
+            <input
+              type="text"
+              name="lastName"
+              autoComplete="family-name"
+              required
+              maxLength="80"
+              value={formData.lastName}
+              onChange={updateField}
+            />
+          </label>
+        </div>
+      </fieldset>
+      <TextInput
+        label={config.phoneLabel}
+        name="phone"
+        type="tel"
+        autoComplete="tel"
+        maxLength="40"
+        value={formData.phone}
+        onChange={updateField}
+      />
+      <TextInput
+        label={config.emailLabel}
+        name="email"
+        type="email"
+        autoComplete="email"
+        required
+        maxLength="254"
+        value={formData.email}
+        onChange={updateField}
+      />
+      {config.detailFields.map((field) => (
+        <DetailInput
+          key={field.name}
+          field={field}
+          value={formData.details[field.name] || ""}
+          onChange={updateField}
+        />
+      ))}
+      <label>
+        <span>{config.messageLabel} <RequiredMark /></span>
+        <textarea
+          name="message"
+          rows="6"
+          required
+          minLength="2"
+          maxLength="3000"
+          value={formData.message}
+          onChange={updateField}
+        />
+      </label>
+      <label className="contact-honeypot" aria-hidden="true">
+        <span>Website</span>
+        <input name="website" tabIndex="-1" autoComplete="off" value={formData.website} onChange={updateField} />
+      </label>
+      <div className="turnstile-field">
+        {turnstileSiteKey ? (
+          <div ref={turnstileContainerRef} />
+        ) : (
+          <p>Verification is not configured yet.</p>
+        )}
+      </div>
+      {feedback && (
+        <p className={`form-status form-status-${status}`} role="status" aria-live="polite">
+          {feedback}
+        </p>
+      )}
+      <button className="outline-button" type="submit" disabled={isSending}>
+        {isSending ? "Sending..." : "Send"}
+      </button>
+    </form>
   );
 }
 
@@ -1176,10 +1601,55 @@ function NotFound({ onNavigate }) {
   );
 }
 
-function Footer() {
+function CookieConsent({ onNavigate }) {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    setVisible(!hasStoredCookieConsent());
+  }, []);
+
+  const acceptCookies = () => {
+    storeCookieConsent();
+    setVisible(false);
+  };
+
+  const openPrivacy = (event) => {
+    event.preventDefault();
+    onNavigate("/impressum");
+  };
+
+  if (!visible) return null;
+
+  return (
+    <section className="cookie-consent" role="region" aria-label="Cookie notice">
+      <div className="cookie-consent-inner">
+        <p>
+          <strong>Cookie notice</strong>
+          <span>
+            We use essential cookies for contact form security and spam protection. No analytics cookies are active.
+          </span>
+        </p>
+        <div className="cookie-consent-actions">
+          <a className="cookie-consent-link" href={localHref("/impressum")} onClick={openPrivacy}>
+            Privacy
+          </a>
+          <button className="outline-button cookie-consent-button" type="button" onClick={acceptCookies}>
+            Accept
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Footer({ onNavigate }) {
   const marqueeText = "ART VENUE  |  SEASONAL MENU  |  EVENTS  |  WINE PAIRING  ✦";
   const renderMarqueeGroup = (group) =>
     Array.from({ length: 4 }, (_, index) => <span key={`${group}-${index}`}>{marqueeText}</span>);
+  const handleImpressum = (event) => {
+    event.preventDefault();
+    onNavigate("/impressum");
+  };
 
   return (
     <footer className="site-footer">
@@ -1208,6 +1678,11 @@ function Footer() {
         </div>
         <div className="footer-meta" data-motion="fade-up" data-motion-delay="270">
           <p>© 2026 Kai Maison. All Rights Reserved.</p>
+          <p>
+            <a className="footer-legal-link" href={localHref("/impressum")} onClick={handleImpressum}>
+              Impressum
+            </a>
+          </p>
           <p className="footer-credit">
             Coded by{" "}
             <a
@@ -1215,9 +1690,9 @@ function Footer() {
               href="http://tutty-lab.com/"
               target="_blank"
               rel="noreferrer"
-              aria-label="Coded by TUTTYLAB"
+              aria-label="Coded by tuttylab"
             >
-              TUTTY<span className="tuttylab-lab">LAB</span>
+              tutty<span className="tuttylab-lab">lab</span>
             </a>
             .
           </p>

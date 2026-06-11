@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --host 0.0.0.0",
-    "build": "npm run optimize:assets && vite build",
-    "preview": "vite preview --host 0.0.0.0",
+    "dev": "node ./node_modules/vite/bin/vite.js --host 0.0.0.0",
+    "build": "npm run optimize:assets && node ./node_modules/vite/bin/vite.js build && npm run prepare:pages",
+    "preview": "node ./node_modules/vite/bin/vite.js preview --host 0.0.0.0",
     "optimize:assets": "node scripts/optimize-assets.mjs",
     "prepare:pages": "node scripts/prepare-pages.mjs"
   },

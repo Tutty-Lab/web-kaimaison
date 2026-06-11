@@ -2,4 +2,13 @@ node_modules/
 dist/
 output/
 assets/
+private/kai-contact/
+private/kai-contact-config.php
 *.log
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db

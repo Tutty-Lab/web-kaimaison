@@ -4,6 +4,7 @@ import sharp from "sharp";
 
 const projectRoot = process.cwd();
 const sourceDir = path.join(projectRoot, "assets", "website Kai maison");
+const rootAssetDir = path.join(projectRoot, "assets");
 const crawlSourceDir = path.join(projectRoot, "assets", "kaimaison.de-images", "images");
 const kaiSourceDir = path.join(projectRoot, "assets", "kai");
 const birdSourceDir = path.join(projectRoot, "assets", "bird");
@@ -44,6 +45,11 @@ const crawledAssetMap = [
   ["009-kai-maison-wein.webp", "drink-guest"],
 ];
 
+const menuAssetMap = [
+  ["Menu 01.tif", "menu-01"],
+  ["Menu 02.tif", "menu-02"],
+];
+
 const kaiStripAssetMap = [
   ["1.jpg", "strip-food-service"],
   ["2.jpg", "strip-plated-bite"],
@@ -52,6 +58,8 @@ const kaiStripAssetMap = [
   ["5.tif", "team-phuong"],
   ["6.jpg", "team-hung"],
   ["7.tif", "team-group"],
+  ["event-3-years.jpg", "event-3-years"],
+  ["event-menu-launch.jpg", "event-menu-launch"],
 ];
 
 const birdAssetMap = [
@@ -78,6 +86,7 @@ async function generatedAssetsComplete() {
   const required = [
     ...assetMap.flatMap(([, outputName]) => [`${outputName}.webp`, `${outputName}.jpg`]),
     ...crawledAssetMap.flatMap(([, outputName]) => [`kai/${outputName}.webp`, `kai/${outputName}.jpg`]),
+    ...menuAssetMap.flatMap(([, outputName]) => [`kai/${outputName}.webp`, `kai/${outputName}.jpg`]),
     ...kaiStripAssetMap.flatMap(([, outputName]) => [`kai/${outputName}.webp`, `kai/${outputName}.jpg`]),
     ...birdAssetMap.map(([, outputName]) => `bird/${outputName}`),
     "kai/gift-card-purple.webp",
@@ -167,6 +176,21 @@ for (const [sourceName, outputName] of crawledAssetMap) {
     .toFile(path.join(kaiOutputDir, `${outputName}.jpg`));
 }
 
+for (const [sourceName, outputName] of menuAssetMap) {
+  const inputPath = path.join(rootAssetDir, sourceName);
+  await sharp(inputPath)
+    .rotate()
+    .resize({ width: 1800, withoutEnlargement: true })
+    .webp({ quality: 82 })
+    .toFile(path.join(kaiOutputDir, `${outputName}.webp`));
+
+  await sharp(inputPath)
+    .rotate()
+    .resize({ width: 900, withoutEnlargement: true })
+    .jpeg({ quality: 78, mozjpeg: true })
+    .toFile(path.join(kaiOutputDir, `${outputName}.jpg`));
+}
+
 for (const [sourceName, outputName] of kaiStripAssetMap) {
   const inputPath = path.join(kaiSourceDir, sourceName);
   await sharp(inputPath)
@@ -205,5 +229,5 @@ await fs.copyFile(
 );
 
 console.log(
-  `Generated ${(assetMap.length + crawledAssetMap.length + kaiStripAssetMap.length) * 2} responsive images, logo, and menu PDFs in ${outputDir}`,
+  `Generated ${(assetMap.length + crawledAssetMap.length + menuAssetMap.length + kaiStripAssetMap.length) * 2} responsive images, logo, and menu PDFs in ${outputDir}`,
 );
