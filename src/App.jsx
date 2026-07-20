@@ -19,28 +19,13 @@ const contactInitialState = {
 };
 
 const legalSubheadingBlocks = new Set([
-  "Angaben gemäß § 5 TMG",
+  "Angaben gemäß § 5 Digitale-Dienste-Gesetz (DDG)",
+  "Vertreten durch die Geschäftsführer",
   "Kontakt",
-  "Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV",
-  "EU-Streitschlichtung",
-  "Verbraucherstreitbeilegung / Universalschlichtungsstelle",
-  "Haftung für Inhalte",
-  "Haftung für Links",
-  "Urheberrecht",
-  "Geltungsbereich",
-  "Verantwortlicher",
-  "Externe Hosting-Leistungen durch Kinsta, Inc.",
-  "Warenwirtschaftssystem:",
-  "Datenweitergabe an Versanddienstleister zum Zwecke der Versandankündigung:",
-  "Unser Versanddienstleister:",
-  "Die von uns genutzten Zahlungsdienstleister sind:",
-  "Visa und Mastercard",
-  "PayPal",
-  "Vorkasse und Rechnung",
-  "Sofortüberweisung (Klarna)",
-  "Maestro Card",
-  "Google Fonts:",
-  "Widerspruchsrecht",
+  "Registereintrag",
+  "Umsatzsteuer-Identifikationsnummer",
+  "Restaurantanschrift",
+  "Verbraucherstreitbeilegung",
 ]);
 const legalLinkPattern = /(https?:\/\/[^\s]+|[\w.+-]+@[\w.-]+\.[A-Za-z]{2,})/g;
 
