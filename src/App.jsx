@@ -19,6 +19,14 @@ const contactInitialState = {
 };
 
 const legalSubheadingBlocks = new Set([
+  "Angaben gemäß § 5 TMG",
+  "Kontakt",
+  "Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV",
+  "EU-Streitschlichtung",
+  "Verbraucherstreitbeilegung / Universalschlichtungsstelle",
+  "Haftung für Inhalte",
+  "Haftung für Links",
+  "Urheberrecht",
   "Geltungsbereich",
   "Verantwortlicher",
   "Externe Hosting-Leistungen durch Kinsta, Inc.",
