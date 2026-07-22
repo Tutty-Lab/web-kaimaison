@@ -13,6 +13,7 @@ const routes = [
   "gift-cards",
   "contact",
   "impressum",
+  "datenschutz",
   "en",
   "en/menu",
   "en/functions",

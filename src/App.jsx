@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { birdIcons, eventItems, images, menuDocuments, navItems, photoStrips, pressItems, site } from "./data.js";
 import impressumText from "./impressumText.txt?raw";
+import privacyText from "./privacyText.txt?raw";
 import { useOjigiMotion } from "./motion.js";
 
 const appBase = import.meta.env.BASE_URL || "/";
@@ -26,6 +27,17 @@ const legalSubheadingBlocks = new Set([
   "Umsatzsteuer-Identifikationsnummer",
   "Restaurantanschrift",
   "Verbraucherstreitbeilegung",
+  "1. Verantwortlicher",
+  "2. Zugriffsdaten und Hosting",
+  "3. Kontaktaufnahme per Formular oder E-Mail",
+  "4. Cloudflare Turnstile",
+  "5. Resend",
+  "6. Cookies",
+  "7. Google Tag Manager",
+  "8. Externe Links",
+  "9. Speicherdauer",
+  "10. Ihre Rechte",
+  "11. Stand",
 ]);
 const legalLinkPattern = /(https?:\/\/[^\s]+|[\w.+-]+@[\w.-]+\.[A-Za-z]{2,})/g;
 
@@ -40,14 +52,22 @@ function normalizeLegalBlock(block) {
   return [block];
 }
 
-const impressumBlocks = impressumText
-  .trim()
-  .split(/\n{2,}/)
-  .map((block) => block.trim())
-  .filter(Boolean)
-  .flatMap(normalizeLegalBlock);
+function parseLegalText(rawText) {
+  return rawText
+    .trim()
+    .split(/\n{2,}/)
+    .map((block) => block.trim())
+    .filter(Boolean)
+    .flatMap(normalizeLegalBlock);
+}
+
+const impressumBlocks = parseLegalText(impressumText);
 const impressumTitle = impressumBlocks[0] || "Impressum";
 const impressumBodyBlocks = impressumBlocks.slice(1);
+
+const privacyBlocks = parseLegalText(privacyText);
+const privacyTitle = privacyBlocks[0] || "Datenschutzerklärung";
+const privacyBodyBlocks = privacyBlocks.slice(1);
 
 const contactFormConfigs = {
   contact: {
@@ -357,6 +377,8 @@ function App() {
         return <ContactPage />;
       case "/impressum":
         return <ImpressumPage />;
+      case "/datenschutz":
+        return <DatenschutzPage />;
       default:
         return <NotFound onNavigate={navigate} />;
     }
@@ -1171,18 +1193,26 @@ function renderLegalInlineText(block) {
   });
 }
 
-function ImpressumPage() {
+function LegalPage({ title, bodyBlocks }) {
   return (
     <section className="page-shell legal-page">
-      <MotionHeading as="h1">{impressumTitle}</MotionHeading>
+      <MotionHeading as="h1">{title}</MotionHeading>
       <div className="legal-text">
-        {impressumBodyBlocks.map((block) => {
+        {bodyBlocks.map((block) => {
           const Tag = getLegalBlockTag(block);
           return <Tag key={block}>{renderLegalInlineText(block)}</Tag>;
         })}
       </div>
     </section>
   );
+}
+
+function ImpressumPage() {
+  return <LegalPage title={impressumTitle} bodyBlocks={impressumBodyBlocks} />;
+}
+
+function DatenschutzPage() {
+  return <LegalPage title={privacyTitle} bodyBlocks={privacyBodyBlocks} />;
 }
 
 function FunctionsPage() {
@@ -1608,7 +1638,7 @@ function CookieConsent({ onNavigate }) {
 
   const openPrivacy = (event) => {
     event.preventDefault();
-    onNavigate("/impressum");
+    onNavigate("/datenschutz");
   };
 
   if (!visible) return null;
@@ -1623,8 +1653,8 @@ function CookieConsent({ onNavigate }) {
           </span>
         </p>
         <div className="cookie-consent-actions">
-          <a className="cookie-consent-link" href={localHref("/impressum")} onClick={openPrivacy}>
-            Privacy
+          <a className="cookie-consent-link" href={localHref("/datenschutz")} onClick={openPrivacy}>
+            Datenschutzerklärung
           </a>
           <button className="outline-button cookie-consent-button" type="button" onClick={acceptCookies}>
             Accept
@@ -1642,6 +1672,10 @@ function Footer({ onNavigate }) {
   const handleImpressum = (event) => {
     event.preventDefault();
     onNavigate("/impressum");
+  };
+  const handleDatenschutz = (event) => {
+    event.preventDefault();
+    onNavigate("/datenschutz");
   };
 
   return (
@@ -1674,6 +1708,10 @@ function Footer({ onNavigate }) {
           <p>
             <a className="footer-legal-link" href={localHref("/impressum")} onClick={handleImpressum}>
               Impressum
+            </a>
+            <span aria-hidden="true"> · </span>
+            <a className="footer-legal-link" href={localHref("/datenschutz")} onClick={handleDatenschutz}>
+              Datenschutzerklärung
             </a>
           </p>
           <p className="footer-credit">

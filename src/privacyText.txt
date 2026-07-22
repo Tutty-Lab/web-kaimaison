@@ -1,0 +1,54 @@
+Kai Maison – Datenschutzerklärung
+
+1. Verantwortlicher
+
+Verantwortlich für die Verarbeitung personenbezogener Daten auf dieser Website ist:
+
+Asia Moin GmbH
+Herzbergstraße 128–139
+Halle 4, Raum 402
+10365 Berlin
+Deutschland
+
+E-Mail: info@asiamoin.com
+Telefon: +49 30 88773398
+
+2. Zugriffsdaten und Hosting
+
+Beim Aufruf dieser Website verarbeitet unser Hosting-Anbieter die technisch erforderlichen Verbindungsdaten, insbesondere IP-Adresse, Datum und Uhrzeit des Zugriffs, aufgerufene Seite, Browsertyp, Betriebssystem und Referrer-URL. Die Verarbeitung erfolgt, um die Website bereitzustellen, zu sichern und zu optimieren.
+
+3. Kontaktaufnahme per Formular oder E-Mail
+
+Wenn Sie uns per Formular oder E-Mail kontaktieren, verarbeiten wir die von Ihnen übermittelten Angaben, um Ihre Anfrage zu beantworten. Dazu gehören je nach Formular Vorname, Nachname, E-Mail-Adresse, Telefonnummer, Nachricht sowie weitere freiwillige Angaben.
+
+4. Cloudflare Turnstile
+
+Wir verwenden Cloudflare Turnstile zur Spam- und Bot-Abwehr auf unseren Formularen. Dabei können technische Daten an Cloudflare übermittelt werden, um die Anfrage als echt oder automatisiert einzuordnen.
+
+5. Resend
+
+Wir versenden Formularanfragen per Resend als E-Mail-Dienstleister. Dabei werden die für den Versand erforderlichen Daten, einschließlich der von Ihnen übermittelten Kontaktdaten und Nachrichteninhalte, an Resend übertragen.
+
+6. Cookies
+
+Diese Website verwendet ein notwendiges Cookie zur Speicherung Ihrer Cookie-Einstellung. Zusätzlich kann für das Kontaktformular ein technisches Gerät-Cookie gesetzt werden, um Missbrauch und Mehrfachversand zu erschweren.
+
+7. Google Tag Manager
+
+Wir setzen Google Tag Manager ein, um technische Tags auf der Website zu verwalten. Dabei können technische Daten wie IP-Adresse, Browserinformationen und aufgerufene Seiten an Google übermittelt werden.
+
+8. Externe Links
+
+Unsere Website enthält Links zu externen Websites Dritter. Für deren Inhalte und Datenschutzpraktiken sind die jeweiligen Anbieter verantwortlich.
+
+9. Speicherdauer
+
+Personenbezogene Daten werden nur so lange gespeichert, wie es für den jeweiligen Zweck erforderlich ist oder gesetzliche Aufbewahrungspflichten bestehen.
+
+10. Ihre Rechte
+
+Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit sowie auf Widerspruch gegen bestimmte Verarbeitungen. Außerdem steht Ihnen ein Beschwerderecht bei einer Datenschutzaufsichtsbehörde zu.
+
+11. Stand
+
+Juli 2026
