@@ -1718,7 +1718,7 @@ function Footer({ onNavigate }) {
             Coded by{" "}
             <a
               className="tuttylab-link"
-              href="http://tutty-lab.com/"
+              href="https://tuttylab.de/"
               target="_blank"
               rel="noreferrer"
               aria-label="Coded by tuttylab"
